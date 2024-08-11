@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "cloudinary": "^2.4.0",
     "formik": "^2.4.6",
+    "mongoose": "^8.5.2",
     "next": "14.2.5",
     "preline": "^2.4.1",
     "react": "^18",
