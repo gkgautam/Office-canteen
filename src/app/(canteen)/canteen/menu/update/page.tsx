@@ -1,9 +1,27 @@
-import MenuList from '@/app/(canteen)/components/MenuList'
+import { getMenu } from '@/actions/menus/updatemenu/route'
+import MenuList from '@/app/(canteen)/components/Menulist'
 import React from 'react'
 
-function CanteenUpdateMenu() {
+// interface MenuItem {
+//   menuItemName: string;
+//   menuItemCategory: string;
+//   menuItemDescription: string;
+//   menuItemPrice: number;
+//   menuItemImage: string | null;
+// }
+// interface dataResponse {
+//     success: boolean,
+//     statusCode: number,
+//     message: string,
+//     data:MenuItem[] ;
+// }
+async function CanteenUpdateMenu() {
+
+  const allFetchedData : any  = await getMenu();
+
   return (
-   <MenuList/>
+
+   <MenuList allFetchedData={allFetchedData.data}/>
   )
 }
 
