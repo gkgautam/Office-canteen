@@ -35,7 +35,7 @@ export async function addMenu(formData: FormData) {
 
     let imageUrl: string | null = null;
 
-    if (menuItemImage && menuItemImage instanceof File) {
+    if (menuItemImage && menuItemImage as File) {
       // Upload image
       const uploadImage = await sendMenuImageIntoCloud(menuItemImage);
 

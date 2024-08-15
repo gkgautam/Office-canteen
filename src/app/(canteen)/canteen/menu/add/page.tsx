@@ -36,7 +36,8 @@ function CanteenAddMenu() {
     }
 
     const res = await addMenu(formData);
-    console.log(res);
+    // console.log(res);
+      alert(res.message);
   }
 
   return (
