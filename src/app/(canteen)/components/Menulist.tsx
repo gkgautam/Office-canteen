@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react'
 
 interface MenuListProps {
@@ -6,8 +7,9 @@ interface MenuListProps {
       menuItemCategory: string,
       menuItemDescription: string,
       menuItemPrice: number,
-      menuItemImage: string | null
-  }
+      menuItemImage: string | null,
+      _id: string
+  }[];
 }
 function MenuList({allFetchedData}:MenuListProps) {
   return (
@@ -294,176 +296,75 @@ function MenuList({allFetchedData}:MenuListProps) {
                 </div>
               </div>
             </div>
-            {/* End Header */}
-            {/* Table */}
-            <table className="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-              <thead className="bg-gray-50 dark:bg-neutral-800">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-start">
-                    <div className="flex items-center gap-x-2">
-                      <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                        Menu Item
-                      </span>
-                    </div>
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-start">
-                    <div className="flex items-center gap-x-2">
-                      <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                        Action
-                      </span>
-                    </div>
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-start">
-                    <div className="flex items-center gap-x-2">
-                      <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                        Description
-                      </span>
-                    </div>
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-start">
-                    <div className="flex items-center gap-x-2">
-                      <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                        Price
-                      </span>
-                    </div>
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-start">
-                    <div className="flex items-center gap-x-2">
-                      <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                        Status
-                      </span>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                 {/* {allFetchedData.map((menuItem: MenuItem, index: number) => (   */}
-                <tr className="bg-white hover:bg-gray-50 dark:bg-neutral-900 dark:hover:bg-neutral-800">
-                  <td className="size-px whitespace-nowrap align-top">
-                    <a className="block p-6" href="#">
-                      <div className="flex items-center gap-x-4">
-                        <img
-                          className="shrink-0 size-[100px] rounded-lg"
-                          src="https://img.freepik.com/premium-photo/bowl-rice-with-chicken-rice_1028566-42712.jpg?w=1380"
-                          alt="Product Image"
-                        />
-                        <div>
-                          <span className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                             Chicken Biryani
-                          </span>
-                        </div>
-                      </div>
-                    </a>
-                  </td>
-                  <td className="size-px whitespace-nowrap align-top">
-                    <a className="block p-6" href="#">
-                      <div className="flex items-center gap-x-3">
-                        <img
-                          className="inline-block size-[38px] rounded-full"
-                          src="https://images.unsplash.com/photo-1531927557220-a9e23c1e4794?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
-                          alt="Product Image"
-                        />
-                        <div className="grow">
-                          <span className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                            Christina Bersh
-                          </span>
-                          <span className="block text-sm text-gray-500 dark:text-neutral-500">
-                            christina@site.com
-                          </span>
-                        </div>
-                      </div>
-                    </a>
-                  </td>
-                  <td className="h-px w-72 min-w-72 align-top">
-                    <a className="block p-6" href="#">
-                      <div className="flex gap-x-1 mb-2">
-                        <svg
-                          className="shrink-0 size-3 text-gray-800 dark:text-neutral-200"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width={16}
-                          height={16}
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg>
-                        <svg
-                          className="shrink-0 size-3 text-gray-800 dark:text-neutral-200"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width={16}
-                          height={16}
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg>
-                        <svg
-                          className="shrink-0 size-3 text-gray-800 dark:text-neutral-200"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width={16}
-                          height={16}
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg>
-                        <svg
-                          className="shrink-0 size-3 text-gray-800 dark:text-neutral-200"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width={16}
-                          height={16}
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg>
-                        <svg
-                          className="shrink-0 size-3 text-gray-800 dark:text-neutral-200"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width={16}
-                          height={16}
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
-                        </svg>
-                      </div>
-                      <span className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                        I just love it!
-                      </span>
-                      <span className="block text-sm text-gray-500 dark:text-neutral-500">
-                      Chicken biryani is a fragrant, spiced rice dish with tender chicken, aromatic saffron, and layers of flavor
-                      </span>
-                    </a>
-                  </td>
-                  <td className="size-px whitespace-nowrap align-top">
-                    <a className="block p-6" href="#">
-                      <span className="text-sm text-gray-600 dark:text-neutral-400">
-                      ₹ 200
-                      </span>
-                    </a>
-                  </td>
-                  <td className="size-px whitespace-nowrap align-top">
-                    <a className="block p-6" href="#">
-                      <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500">
-                        <svg
-                          className="size-2.5"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width={16}
-                          height={16}
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                        >
-                          <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                        </svg>
-                        In Stock
-                      </span>
-                    </a>
-                  </td>
-                </tr>
-                {/* // ))}   */}
-              </tbody>
-            </table>
+            <div className="flex flex-col w-full">
+  {/* Header */}
+  <div className="flex bg-gray-50 dark:bg-neutral-800 border-b border-gray-200 dark:border-neutral-700">
+    <div className="flex-1 px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+      Menu Item
+    </div>
+    <div className="flex-1 px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+      Action
+    </div>
+    <div className="flex-1 px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+      Description
+    </div>
+    <div className="flex-1 px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+      Price
+    </div>
+    <div className="flex-1 px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+      Action
+    </div>
+  </div>
+  {/* Row */}
+  {allFetchedData.map((item, index:number) => (
+        <div
+          key={index}
+          className="flex border-b border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-800"
+        >
+          {/* Menu Item Cell */}
+          <div className="flex-1 px-6 py-3 flex items-center gap-x-4">
+            {item.menuItemImage ? (
+              <img
+                className="w-24 h-24 rounded-lg object-cover"
+                src={item.menuItemImage}
+                alt={item.menuItemName}
+              />
+            ) : (
+              <div className="w-24 h-24 bg-gray-200 dark:bg-neutral-700 rounded-lg"></div>
+            )}
+            <span className="text-sm font-semibold text-gray-800 dark:text-neutral-200">
+              {item.menuItemName}
+            </span>
+          </div>
+
+          {/* Category Cell */}
+          <div className="flex-1 px-6 py-3 text-sm text-gray-800 dark:text-neutral-200">
+            {item.menuItemCategory}
+          </div>
+
+          {/* Description Cell */}
+          <div className="flex-1 px-6 py-3">
+            <span className="block text-sm text-gray-500 dark:text-neutral-500">
+              {item.menuItemDescription}
+            </span>
+          </div>
+
+          {/* Price Cell */}
+          <div className="flex-1 px-6 py-3 text-sm text-gray-600 dark:text-neutral-400">
+            ₹ {item.menuItemPrice}
+          </div>
+
+          {/* Status Cell */}
+          <div className="flex-1 px-6 py-3">
+                    <Link href={`/canteen/menu/update/${item._id}`}  className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500">
+                      Edit
+                    </Link>
+          </div>
+        </div>
+      ))}
+</div>
+
+
             {/* End Table */}
             {/* Footer */}
             <div className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">

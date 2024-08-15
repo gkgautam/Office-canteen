@@ -1,4 +1,4 @@
-import { getMenu } from '@/actions/menus/updatemenu/route'
+import { getMenu } from '@/actions/menus/fetchmenu/route'
 import MenuList from '@/app/(canteen)/components/Menulist'
 import React from 'react'
 
