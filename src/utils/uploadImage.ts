@@ -53,3 +53,20 @@ export async function sendMenuImageIntoCloud(file: File): Promise<string | null>
     throw error;
   }
 }
+
+export async function deleteImagefromCloud(public_id: string) {
+  try {
+    // Ensure public_id is in an array format
+    const deleteImage = await cloudinary.api.delete_resources([public_id], { resource_type: "image" });
+
+    if (!deleteImage || deleteImage.deleted[public_id] !== 'deleted') {
+      return { success: false, message: "Error deleting images from Cloudinary" };
+    }
+
+    return { success: true, message: "Image successfully deleted", data: deleteImage };
+
+  } catch (error) {
+    console.error("Error deleting image from Cloudinary:", error);
+    return { success: false, message: "An error occurred while deleting the image", error };
+  }
+}
