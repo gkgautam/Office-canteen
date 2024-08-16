@@ -2,63 +2,90 @@
 
 import connectDB from "@/db/connection";
 import Menu from "@/models/menu.model";
-import { sendMenuImageIntoCloud } from "@/utils/uploadImage";
+import { deleteImagefromCloud, sendMenuImageIntoCloud } from "@/utils/uploadImage";
 
 interface CanteenAddMenuFormProps {
-    menuItemName: string;
-    menuItemCategory: string;
-    menuItemDescription: string;
-    menuItemPrice: number;
-    menuItemImage: File | null; // Changed type to File | null
-  }
+  menuItemName: string;
+  menuItemCategory: string;
+  menuItemDescription: string;
+  menuItemPrice: number;
+  menuItemImage: File | null; // Changed type to File | null
+}
 // Your existing addMenu function
-export async function updateCurrentMenuItem(id:string,updateData:CanteenAddMenuFormProps) {
+export async function updateCurrentMenuItem(id: string, formData: FormData) {
   try {
     await connectDB(); // Ensure DB connection is established
 
-    // console.log('batman:',id,updateData);
 
-    // let imageUrl: string | null = null;
+    const menuItemName = formData.get("menuItemName");
+    const menuItemCategory = formData.get("menuItemCategory");
+    const menuItemDescription = formData.get("menuItemDescription");
+    const menuItemPrice = formData.get("menuItemPrice");
+    const menuItemImage = formData.get("menuItemImage") as File | null | string; // Type assertion    
 
-    // if (updateData.menuItemImage && updateData.menuItemImage as File) {
-    //   // Upload image
-    //   const uploadImage = await sendMenuImageIntoCloud(updateData.menuItemImage);
+    const currentMenuItem: any = await Menu.findById({ _id: id });
 
-    //   if (uploadImage) {
-    //     imageUrl = uploadImage;
-    //   } else {
-    //     return {
-    //       success: false,
-    //       statusCode: 500,
-    //       message: "Failed to upload image"
-    //     };
-    //   }
-    // }
+    if (menuItemImage !== currentMenuItem.menuItemImage) {
 
-    const currentMenuItem : any = await Menu.findById({_id:id});
-    currentMenuItem.menuItemName = updateData.menuItemName || currentMenuItem.menuItemName;
-    currentMenuItem.menuItemCategory = updateData.menuItemCategory || currentMenuItem.menuItemCategory;
-    currentMenuItem.menuItemDescription = updateData.menuItemDescription || currentMenuItem.menuItemDescription;
-    currentMenuItem.menuItemPrice = updateData.menuItemPrice || currentMenuItem.menuItemPrice;
-    currentMenuItem.menuItemImage = updateData.menuItemImage || currentMenuItem.menuItemImage;
+      if (typeof menuItemImage === "string") {
+        // Find the last '/' and the position of '.jpg'
+        const lastSlashIndex = menuItemImage.lastIndexOf('/');
+        const dotIndex = menuItemImage.lastIndexOf('.');
 
-    // 3. Save the updated document
-    const updatedMenuItem = await currentMenuItem.save();
-    // console.log('batman:',currentMenuItem);
+        // Extract the substring between the last '/' and '.jpg'
+        const public_id: string = menuItemImage.substring(lastSlashIndex + 1, dotIndex);
+        await deleteImagefromCloud(public_id);
+      }
+      else if (typeof menuItemImage === "object") {
+        if (menuItemImage !== null) {
+          const newMenuItemImageUrl = await sendMenuImageIntoCloud(menuItemImage);
 
+          currentMenuItem.menuItemName = menuItemName || currentMenuItem.menuItemName;
+          currentMenuItem.menuItemCategory = menuItemCategory || currentMenuItem.menuItemCategory;
+          currentMenuItem.menuItemDescription = menuItemDescription || currentMenuItem.menuItemDescription;
+          currentMenuItem.menuItemPrice = menuItemPrice || currentMenuItem.menuItemPrice;
+          currentMenuItem.menuItemImage = newMenuItemImageUrl || currentMenuItem.menuItemImage;
 
-    if (updatedMenuItem) {
+          const updatedMenuItem = await currentMenuItem.save();
+
+          if (updatedMenuItem) {
+            return {
+              success: true,
+              statusCode: 200,
+              message: "Menu updated Successfully"
+            };
+          } else {
+            return {
+              success: false,
+              statusCode: 500,
+              message: "Failed to fetch data"
+            };
+          }
+        }
+      }
+    }
+    else {
+      currentMenuItem.menuItemName = menuItemName || currentMenuItem.menuItemName;
+      currentMenuItem.menuItemCategory = menuItemCategory || currentMenuItem.menuItemCategory;
+      currentMenuItem.menuItemDescription = menuItemDescription || currentMenuItem.menuItemDescription;
+      currentMenuItem.menuItemPrice = menuItemPrice || currentMenuItem.menuItemPrice;
+      currentMenuItem.menuItemImage = menuItemImage || currentMenuItem.menuItemImage;
+
+      const updatedMenuItem = await currentMenuItem.save();
+
+      if (updatedMenuItem) {
         return {
-            success: true,
-            statusCode: 200,
-            message: "Menu updated Successfully"
-          };
-    } else {
-      return {
-        success: false,
-        statusCode: 500,
-        message: "Failed to fetch data"
-      };
+          success: true,
+          statusCode: 200,
+          message: "Menu updated Successfully"
+        };
+      } else {
+        return {
+          success: false,
+          statusCode: 500,
+          message: "Failed to fetch data"
+        };
+      }
     }
 
   } catch (error: any) {

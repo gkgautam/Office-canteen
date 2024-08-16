@@ -3,65 +3,91 @@ import React, { useEffect, useState, ChangeEvent } from 'react'
 import { useFormik } from 'formik';
 import { updateCurrentMenuItem } from '@/actions/menus/updatemenu/route';
 import { getCurrentMenuItem } from '@/actions/menus/fetchmenu/route';
+import Image from 'next/image';
 
 interface CanteenAddMenuFormProps {
-    menuItemName: string;
-    menuItemCategory: string;
-    menuItemDescription: string;
-    menuItemPrice: number;
-    menuItemImage: File | null; // Changed type to File | null
+  menuItemName: string;
+  menuItemCategory: string;
+  menuItemDescription: string;
+  menuItemPrice: number;
+  menuItemImage: File | null; // Changed type to File | null
+}
+
+function UpdateMenuItem({ params }: { params: { id: string } }) {
+
+  const [initialValues, setInitialValues] = useState({
+    menuItemName: "",
+    menuItemCategory: "",
+    menuItemDescription: "",
+    menuItemPrice: 0,
+    menuItemImage: null// Ensure it's explicitly null or File
+  });
+
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
+
+  useEffect(() => {
+    if (initialValues.menuItemImage !== null && typeof initialValues.menuItemImage === "object") {
+      // Generate a preview URL for the existing image if it's a File object
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(initialValues.menuItemImage);
+    } else {
+      setImagePreview(null);
+    }
+  }, [initialValues.menuItemImage]);
+
+  const fetchCurrentMenuItem = async (id: string) => {
+    const res: any = await getCurrentMenuItem(id);
+    setInitialValues(res.data);
+    // console.log('superman',res.data);
   }
 
-function UpdateMenuItem({params}:{params:{id:string}}) {
-    const [initialValues, setInitialValues] = useState({
-        menuItemName: "",
-        menuItemCategory: "",
-        menuItemDescription: "",
-        menuItemPrice: 0,
-        menuItemImage: null
-      })
+  useEffect(() => {
+    fetchCurrentMenuItem(params.id);
+  }, [params.id]);
 
-    const fetchCurrentMenuItem = async (id:string)=>{
-        const res :any = await getCurrentMenuItem(id);
-        setInitialValues(res.data);
-        // console.log('superman',res.data);
+  const formik = useFormik({
+    initialValues, onSubmit, enableReinitialize: true
+  });
+
+
+  async function onSubmit(value: CanteenAddMenuFormProps) {
+    const formData = new FormData();
+    formData.append("menuItemName", value.menuItemName);
+    formData.append("menuItemCategory", value.menuItemCategory);
+    formData.append("menuItemDescription", value.menuItemDescription);
+    formData.append("menuItemPrice", value.menuItemPrice.toString());
+
+    if (value.menuItemImage) {
+      formData.append("menuItemImage", value.menuItemImage);
     }
 
-    useEffect(()=>{
-        fetchCurrentMenuItem(params.id);
-    },[params.id]);
+    const res = await updateCurrentMenuItem(params.id, formData);
+    alert(res?.message)
+  }
 
-    const formik = useFormik({
-        initialValues, onSubmit,enableReinitialize: true
-      });
-
-
-      async function onSubmit(value: CanteenAddMenuFormProps) {
-        // const formData = new FormData();
-        // formData.append("menuItemName", value.menuItemName);
-        // formData.append("menuItemCategory", value.menuItemCategory);
-        // formData.append("menuItemDescription", value.menuItemDescription);
-        // formData.append("menuItemPrice", value.menuItemPrice.toString());
-    
-        // if (value.menuItemImage) {
-        //   formData.append("menuItemImage", value.menuItemImage);
-        // }
-    
-        const res = await updateCurrentMenuItem(params.id,value);
-        // console.log(res);
-          alert(res.message);
-
-
-        // console.log('changed data', value);
-      }
-
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files ? event.currentTarget.files[0] : null;
+    formik.setFieldValue("menuItemImage", file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  };
 
   return (
     <div>
-        {
-            params.id
-        }
-              <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto menu-form">
+      {
+        params.id
+      }
+      <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto menu-form">
         <div className="max-w-xl mx-auto">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-gray-800 sm:text-4xl dark:text-white">
@@ -151,8 +177,27 @@ function UpdateMenuItem({params}:{params:{id:string}}) {
                       id="menu-item-image"
                       accept='image/*'
                       className="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                      onChange={(event: ChangeEvent<HTMLInputElement>) => formik.setFieldValue("menuItemImage", event.currentTarget.files ? event.currentTarget.files[0] : null)}
+                      onChange={handleImageChange}
                     />
+                  </div>
+                  <div className="">
+                    {/* <Image src={initialValues.menuItemImage !== null && initialValues.menuItemImage || ""} className='w-24 h-14 rounded-lg' width={200} height={200} alt="menu-image" /> */}
+                    {imagePreview ? (
+                      <Image
+                        src={imagePreview as string}
+                        className="w-24 h-14 rounded-lg"
+                        width={200}
+                        height={200}
+                        alt="menu-image"
+                      />
+                    ) : <Image
+                      src={initialValues.menuItemImage || ""}
+                      className="w-24 h-14 rounded-lg"
+                      width={200}
+                      height={200}
+                      alt="menu-image"
+                    />
+                    }
                   </div>
                 </div>
                 <div className="mt-6 grid">
