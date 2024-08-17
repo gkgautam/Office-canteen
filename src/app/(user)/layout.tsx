@@ -391,9 +391,9 @@ export default function RootLayout({
         >
           <div className="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
             <div className="py-2 md:py-0 flex flex-col md:flex-row md:items-center gap-y-0.5 md:gap-y-0 md:gap-x-6">
-              <a
+              <Link
                 className="py-2 md:py-0 flex items-center font-medium text-sm text-blue-600 focus:outline-none focus:text-blue-600 dark:text-blue-500 dark:focus:text-blue-500"
-                href="#"
+                href="/user/home"
                 aria-current="page"
               >
                 <svg
@@ -412,8 +412,8 @@ export default function RootLayout({
                   <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                 </svg>
                 Home
-              </a>
-              <a
+              </Link>
+              <Link
                 className="py-2 md:py-0 flex items-center font-medium text-sm text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
                 href="#"
               >
@@ -433,10 +433,10 @@ export default function RootLayout({
                   <circle cx={12} cy={7} r={4} />
                 </svg>
                 My orders
-              </a>
-              {/* <a
+              </Link>
+               <Link
                 className="py-2 md:py-0 flex items-center font-medium text-sm text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-                href="#"
+                href="/user/cart"
               >
                 <svg
                   className="shrink-0 size-4 me-3 md:me-2 block md:hidden"
@@ -455,9 +455,9 @@ export default function RootLayout({
                   <path d="M22 13a18.15 18.15 0 0 1-20 0" />
                   <rect width={20} height={14} x={2} y={6} rx={2} />
                 </svg>
-                Account
-              </a>
-              <a
+                Cart
+              </Link>
+              {/* <a
                 className="py-2 md:py-0 flex items-center font-medium text-sm text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
                 href="#"
               >
