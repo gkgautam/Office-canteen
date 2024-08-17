@@ -2,7 +2,8 @@
 
 import { addMenu } from '@/actions/menus/addmenu/route';
 import { useFormik } from 'formik';
-import React, { ChangeEvent } from 'react';
+import Image from 'next/image';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 interface CanteenAddMenuFormProps {
   menuItemName: string;
@@ -14,14 +15,31 @@ interface CanteenAddMenuFormProps {
 
 function CanteenAddMenu() {
 
+  const [initialValues, setInitialValues] = useState({
+    menuItemName: "",
+    menuItemCategory: "",
+    menuItemDescription: "",
+    menuItemPrice: 0,
+    menuItemImage: null// Ensure it's explicitly null or File
+  });
+
+  const [imagePreview, setImagePreview] = useState<string | ArrayBuffer | null>(null);
+
+  useEffect(() => {
+    if (initialValues.menuItemImage !== null && typeof initialValues.menuItemImage === "object") {
+      // Generate a preview URL for the existing image if it's a File object
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(initialValues.menuItemImage);
+    } else {
+      setImagePreview(null);
+    }
+  }, [initialValues.menuItemImage]);
+
   const formik = useFormik({
-    initialValues: {
-      menuItemName: "",
-      menuItemCategory: "",
-      menuItemDescription: "",
-      menuItemPrice: 0,
-      menuItemImage: null
-    }, onSubmit
+    initialValues, onSubmit
   });
 
   async function onSubmit(value: CanteenAddMenuFormProps) {
@@ -39,6 +57,20 @@ function CanteenAddMenu() {
     // console.log(res);
       alert(res.message);
   }
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.currentTarget.files ? event.currentTarget.files[0] : null;
+    formik.setFieldValue("menuItemImage", file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(null);
+    }
+  };
 
   return (
     <>
@@ -132,8 +164,21 @@ function CanteenAddMenu() {
                       id="menu-item-image"
                       accept='image/*'
                       className="py-3 px-4 block w-full border border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                      onChange={(event: ChangeEvent<HTMLInputElement>) => formik.setFieldValue("menuItemImage", event.currentTarget.files ? event.currentTarget.files[0] : null)}
+                      onChange={handleImageChange}
                     />
+                  </div>
+                  <div className="">
+                    {/* <Image src={initialValues.menuItemImage !== null && initialValues.menuItemImage || ""} className='w-24 h-14 rounded-lg' width={200} height={200} alt="menu-image" /> */}
+                    {imagePreview ? (
+                      <Image
+                        src={imagePreview as string}
+                        className="w-24 h-14 rounded-lg"
+                        width={200}
+                        height={200}
+                        alt="menu-image"
+                      />
+                    ) : <></>
+                    }
                   </div>
                 </div>
                 <div className="mt-6 grid">
