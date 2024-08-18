@@ -10,13 +10,12 @@ export async function getMenu() {
 
     const allData = await Menu.find({});
 
-
     if (allData) {
       return {
         success: true,
         statusCode: 200,
         message: "all data fetched",
-        data:allData
+        data: allData
       };
     } else {
       return {

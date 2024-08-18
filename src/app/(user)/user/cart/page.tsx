@@ -1,14 +1,14 @@
 "use client";
 
 import useCartStore from '@/store/cart';
+import Link from 'next/link';
 import React from 'react';
 
 const UserCart = () => {
 
   const { data } = useCartStore();
 
-  console.log(data);
-  
+   
   return (
     <>
       {
@@ -21,6 +21,11 @@ const UserCart = () => {
           )
         })
       }
+      <div className="">
+        <Link href="/user/checkout" className=''>
+          Place your order
+        </Link>
+      </div>
     </>
   )
 }

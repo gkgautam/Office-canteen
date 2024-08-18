@@ -22,7 +22,7 @@ function Cards({ currentItem }: MenuData) {
     addItem(currentItem);
   }
 
-  console.log(data);
+  // console.log(data); 
 
   return (
     <>
