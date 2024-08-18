@@ -303,7 +303,7 @@ function MenuList({allFetchedData}:MenuListProps) {
       Menu Item
     </div>
     <div className="flex-1 px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-      Action
+      Category
     </div>
     <div className="flex-1 px-6 py-3 text-start text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
       Description
@@ -322,7 +322,7 @@ function MenuList({allFetchedData}:MenuListProps) {
           className="flex border-b border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-800"
         >
           {/* Menu Item Cell */}
-          <div className="flex-1 px-6 py-3 flex items-center gap-x-4">
+          <div className="flex-1 inline-flex items-center px-6 py-3 flex items-center gap-x-4">
             {item.menuItemImage ? (
               <img
                 className="w-24 h-24 rounded-lg object-cover"
@@ -338,26 +338,26 @@ function MenuList({allFetchedData}:MenuListProps) {
           </div>
 
           {/* Category Cell */}
-          <div className="flex-1 px-6 py-3 text-sm text-gray-800 dark:text-neutral-200">
+          <div className="flex-1 inline-flex items-center item-center px-6 py-3 text-sm text-gray-800 dark:text-neutral-200">
             {item.menuItemCategory}
           </div>
 
           {/* Description Cell */}
-          <div className="flex-1 px-6 py-3">
+          <div className="flex-1 inline-flex items-center px-6 py-3">
             <span className="block text-sm text-gray-500 dark:text-neutral-500">
               {item.menuItemDescription}
             </span>
           </div>
 
           {/* Price Cell */}
-          <div className="flex-1 px-6 py-3 text-sm text-gray-600 dark:text-neutral-400">
+          <div className="flex-1 inline-flex items-center px-6 py-3 text-sm text-gray-600 dark:text-neutral-400">
             ₹ {item.menuItemPrice}
           </div>
 
           {/* Status Cell */}
-          <div className="flex-1 px-6 py-3">
+          <div className="flex-1 inline-flex items-center px-6 py-3">
                     <Link href={`/canteen/menu/update/${item._id}`}  className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium dark:text-blue-500">
-                      Edit
+                      Edit...
                     </Link>
           </div>
         </div>
