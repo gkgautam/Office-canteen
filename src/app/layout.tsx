@@ -17,14 +17,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         {/* <Navbar/> */}
         {/* <div className="w-11/12 mx-auto"> */}
         {children}
         {/* </div> */}
-        <PrelineScript/>
-        </body>
+        <PrelineScript />
+      </body>
     </html>
   );
 }
