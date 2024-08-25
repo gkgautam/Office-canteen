@@ -1,7 +1,7 @@
 import React from 'react'
 import Cards from '../../components/cards/Cards'
 import { getMenu } from '@/actions/menus/fetchmenu/route'
-import Process from '../../components/process/Process';
+// import Process from '../../components/process/Process';
 
 async function UserHome() {
 

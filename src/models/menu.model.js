@@ -24,6 +24,10 @@ const menuSchema = new mongoose.Schema({
     type: String, // Store the file URL or path as a string
     required: false,
   },
+  quantity: {
+    type: Number,
+    default: 0
+  }
 }, { timestamps: true }); // Add createdAt and updatedAt timestamps
 
 mongoose.models = {};
