@@ -16,6 +16,7 @@ interface MenuData {
     quantity: number;
   }
 }
+
 function Cards({ currentItem }: MenuData) {
 
   const { addItem, data } = useCartStore();

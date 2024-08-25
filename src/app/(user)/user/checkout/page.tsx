@@ -1,10 +1,10 @@
 import React from 'react'
-import Timeline from '../../components/timeline/Timeline'
+import CheckoutComponent from '../../components/checkout/CheckoutComponent'
 
-function page() {
+function CheckoutPage() {
   return (
-    <Timeline/>
+    <CheckoutComponent />
   )
 }
 
-export default page
+export default CheckoutPage
