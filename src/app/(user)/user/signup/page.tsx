@@ -1,5 +1,5 @@
 "use client";
-import { addUser } from '@/actions/users/adduser/route';
+import { addUser } from '@/actions/users/signup/route';
 import { useFormik } from 'formik';
 import Image from 'next/image';
 import React, { ChangeEvent, useEffect, useState } from 'react';
@@ -88,7 +88,7 @@ function SignUp() {
     <div className="bg-white rounded-xl shadow p-4 sm:p-7 dark:bg-neutral-800">
       <div className="mb-8">
         <h2 className="text-xl font-bold text-gray-800 dark:text-neutral-200">
-          Profile
+          Signup
         </h2>
         <p className="text-sm text-gray-600 dark:text-neutral-400">
           Add your name, password and account settings.
@@ -155,7 +155,7 @@ function SignUp() {
                 className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
                 role="tooltip"
               >
-                Displayed on public forums, such as Preline
+                Displayed on public forums, such as office-canteen
               </span>
             </div>
           </div>

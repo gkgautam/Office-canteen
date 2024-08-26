@@ -3,6 +3,7 @@
 import connectDB from "@/db/connection";
 import User from "@/models/user.model";
 import { sendMenuImageIntoCloud } from "@/utils/uploadImage";
+import bcrypt from "bcryptjs";
 
 
 
@@ -35,6 +36,9 @@ export async function addUser(formData: FormData) {
           message: "User Already Exists"
         };
       }
+      
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
   
       let imageUrl: string | null = null;
   
@@ -58,7 +62,7 @@ export async function addUser(formData: FormData) {
         firstName,
         lastName,
         email,
-        password,
+        password: hashedPassword,
         profileImage: imageUrl,
         gender,
         phone
