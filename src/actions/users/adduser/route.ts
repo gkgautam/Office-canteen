@@ -1,5 +1,7 @@
+"use server";
+
 import connectDB from "@/db/connection";
-import User from "@/models/menu.model";
+import User from "@/models/user.model";
 import { sendMenuImageIntoCloud } from "@/utils/uploadImage";
 
 
@@ -14,6 +16,7 @@ export async function addUser(formData: FormData) {
       const password = formData.get("password");
       const phone = formData.get("phone");
       const profileImage = formData.get("profileImage") as File | null; // Type assertion
+      const gender = formData.get("gender");
   
       if (!firstName || !password || !lastName || !email || !phone || !profileImage) {
         return {
@@ -56,7 +59,9 @@ export async function addUser(formData: FormData) {
         lastName,
         email,
         password,
-        profileImage: imageUrl
+        profileImage: imageUrl,
+        gender,
+        phone
       });
   
       const result = await newUser.save();

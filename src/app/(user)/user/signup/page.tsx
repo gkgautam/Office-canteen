@@ -11,6 +11,7 @@ interface UserProfile {
     email: string;
     password: string;
     phone:string // Changed type to File | null
+    gender:string
   }
 
 function SignUp() {
@@ -20,7 +21,8 @@ function SignUp() {
         lastName : "",
         email: "",
         password: "",
-        phone: ""
+        phone: "",
+        gender:""
       });
 
 
@@ -52,6 +54,7 @@ function SignUp() {
         formData.append("email", value.email);
         formData.append("password", value.password);
         formData.append("phone",value.phone)
+        formData.append("gender",value.gender)
     
         if (value.profileImage) {
           formData.append("profileImage", value.profileImage);
@@ -258,10 +261,11 @@ function SignUp() {
               >
                 <input
                   type="radio"
-                  name="af-account-gender-checkbox"
-                  className="shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-500 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                  id="af-account-gender-checkbox"
-                  defaultChecked=""
+                  name="gender"
+                  value="male"
+                  className="shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500"
+                  checked={formik.values.gender === 'male'}
+                  onChange={() => formik.setFieldValue('gender', 'male')}
                 />
                 <span className="text-sm text-gray-500 ms-3 dark:text-neutral-400">
                   Male
@@ -272,11 +276,14 @@ function SignUp() {
                 className="flex py-2 px-3 w-full border border-gray-200 shadow-sm -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg text-sm relative focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
               >
                 <input
-                  type="radio"
-                  name="af-account-gender-checkbox"
-                  className="shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-500 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                  id="af-account-gender-checkbox-female"
-                />
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    className="shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500"
+                    checked={formik.values.gender === 'female'}
+                    onChange={() => formik.setFieldValue('gender', 'female')}
+                  />
+
                 <span className="text-sm text-gray-500 ms-3 dark:text-neutral-400">
                   Female
                 </span>
@@ -286,11 +293,13 @@ function SignUp() {
                 className="flex py-2 px-3 w-full border border-gray-200 shadow-sm -mt-px -ms-px first:rounded-t-lg last:rounded-b-lg sm:first:rounded-s-lg sm:mt-0 sm:first:ms-0 sm:first:rounded-se-none sm:last:rounded-es-none sm:last:rounded-e-lg text-sm relative focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
               >
                 <input
-                  type="radio"
-                  name="af-account-gender-checkbox"
-                  className="shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-500 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                  id="af-account-gender-checkbox-other"
-                />
+                    type="radio"
+                    name="gender"
+                    value="other"
+                    className="shrink-0 mt-0.5 border-gray-300 rounded-full text-blue-600 focus:ring-blue-500"
+                    checked={formik.values.gender === 'other'}
+                    onChange={() => formik.setFieldValue('gender', 'other')}
+                  />
                 <span className="text-sm text-gray-500 ms-3 dark:text-neutral-400">
                   Other
                 </span>
