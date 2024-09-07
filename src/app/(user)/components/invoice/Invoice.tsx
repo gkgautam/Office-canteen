@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Invoice({order}) {
+function Invoice({order,id}) {
   return (
    <>
      <div className="text-center">
@@ -9,19 +9,19 @@ function Invoice({order}) {
       className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
       aria-haspopup="dialog"
       aria-expanded="false"
-      aria-controls="hs-ai-modal"
-      data-hs-overlay="#hs-ai-modal"
+      aria-controls={id}
+      data-hs-overlay={`#${id}`}
     >
       Invoice
     </button>
   </div>
   {/* Modal */}
   <div
-    id="hs-ai-modal"
+    id={id}
     className="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
     role="dialog"
     tabIndex={-1}
-    aria-labelledby="hs-ai-modal-label"
+    aria-labelledby={`${id}-label`}
   >
     <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
       <div className="relative flex flex-col bg-white shadow-lg rounded-xl pointer-events-auto dark:bg-neutral-800">
@@ -32,8 +32,8 @@ function Invoice({order}) {
               type="button"
               className="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-white/10 text-white hover:bg-white/20 focus:outline-none focus:bg-white/20 disabled:opacity-50 disabled:pointer-events-none"
               aria-label="Close"
-              data-hs-overlay="#hs-bg-gray-on-hover-cards"
-              data-hs-remove-element="#hs-ai-modal"
+              data-hs-overlay={`#${id}`}
+              data-hs-remove-element={`#${id}`}
             >
               <span className="sr-only">Close</span>
               <svg
@@ -93,7 +93,7 @@ function Invoice({order}) {
         <div className="p-4 sm:p-7 overflow-y-auto">
           <div className="text-center">
             <h3
-              id="hs-ai-modal-label"
+              id={id}
               className="text-lg font-semibold text-gray-800 dark:text-neutral-200"
             >
               Invoice from Preline
