@@ -7,7 +7,7 @@ export async function getAllMyOrders(myEmail: string) {
   try {
     await connectDB(); // Ensure DB connection is established
 
-    const allMyOrders = await Order.find({ 'paymentDetails.order_by_email': myEmail });
+    const allMyOrders = await Order.find({ 'paymentDetails.order_by_email': myEmail }).exec();
 
     if (allMyOrders) {
       return {
