@@ -1,11 +1,12 @@
 import { getAllMyOrders } from '@/actions/orders/getOrders';
 import React from 'react';
+import Invoice from '../../components/invoice/Invoice';
 
 interface PaymentDetails {
-  order_by_email: string;
-  subTotal: number;
-  shippingCharge: number;
-  grandTotal: number;
+  order_by_email: string | "";
+  subTotal: number | 0;
+  shippingCharge: number | 0;
+  grandTotal: number | 0;
 }
 
 interface OrderDetail {
@@ -29,54 +30,62 @@ interface Order {
   __v: number; // Version key, usually a number
 }[]
 
-interface resposne {
+interface ResponseProps {
   success: boolean,
   statusCode: number,
   message: string,
-  data: Order[]
+  data: Order[] | null;
 }
 
 const MyOrdersPage = async () => {
 
-  // const myOrders: resposne = await getAllMyOrders("pankaj@gmail.com");
+  const myOrders = await getAllMyOrders("pankaj@gmail.com");
+  console.log('batman', myOrders.data);
 
-  // if (!myOrders.success) {
-  //   return <div>Error loading orders</div>;
-  // }
+  if (!myOrders.success) {
+    return <div>Error loading orders</div>;
+  }
 
   return (
     <>
       to do
-      {/* <div className="grid gap-8">
+      <div className="grid gap-8">
         {
           myOrders.data && myOrders.data.map((order, index) => {
             return (
-              // <div className={`flex items-center justify-between`} key={index}>
-              //   <div className="flex flex-col rounded-lg w-full bg-white sm:flex-row">
-              //     <div className="w-52 h-32">
-              //       {
-              //         order.menuItemImage && <img
-              //           className="h-full w-full aspect-square rounded-md border object-cover object-top"
-              //           src={order.menuItemImage}
-              //           alt={order.menuItemName}
-              //         />
-              //       }
-              //     </div>
-              //     <div className="flex w-full flex-col px-4">
-              //       <span className="font-semibold capitalize">
-              //         {order.menuItemName}
-              //       </span>
-              //       <span className="float-right text-sm text-gray-600 capitalize">{order.menuItemCategory}</span>
-              //       <p className="float-right text-xs mt-2 text-gray-500">{order.menuItemDescription}</p>
-              //       <p className="text-lg font-bold">Rs. {order.menuItemPrice}</p>
-              //     </div>
-              //   </div>
+              <div className={`rounded-lg flex justify-between border bg-white px-2 py-4 sm:px-6`} key={index}>
+                <div className={`flex items-center justify-between`} >
+                  <div className="flex flex-col rounded-lg w-full bg-white sm:flex-row">
+                    <div className="w-52 h-32">
+                      {
+                        order.orderDetails && order.orderDetails[0].menuItemImage && <img
+                          className="h-full w-full aspect-square rounded-md border object-cover object-top"
+                          src={order.orderDetails[0].menuItemImage}
+                          alt={order.orderDetails[0].menuItemName || ""}
+                        />
+                      }
+                    </div>
+                    <div className="flex w-full flex-col px-4">
+                      <span className="font-semibold capitalize">
+                        {order.orderDetails[0].menuItemName}
+                      </span>
+                      <span className="float-right text-sm text-gray-600 capitalize">{order.orderDetails[0].menuItemCategory}</span>
+                      <p className="float-right text-xs mt-2 text-gray-500">{order.orderDetails[0].menuItemDescription}</p>
+                      <p className="text-lg font-bold">Rs. {order.orderDetails[0].menuItemPrice}</p>
+                    </div>
+                  </div>
 
-              // </div>
+                </div>
+                <div>
+                  {/* {order.paymentDetails.subTotal} */}
+                  <Invoice order={order} />
+
+                </div>
+              </div>
             )
           })
         }
-      </div> */}
+      </div>
     </>
   )
 }

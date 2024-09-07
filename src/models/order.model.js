@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
+
   orderDetails: [
     {
       _id: mongoose.Types.ObjectId,
@@ -12,6 +13,7 @@ const orderSchema = new mongoose.Schema({
       quantity: Number
     }
   ],
+
   paymentDetails: {
     order_by_email: {
       type: String,
