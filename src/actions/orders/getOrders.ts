@@ -13,7 +13,7 @@ export async function getAllMyOrders(myEmail: string) {
       return {
         success: true,
         statusCode: 201,
-        message: "Order Placed",
+        message: "all orders fetched",
         data: allMyOrders
       };
     }
