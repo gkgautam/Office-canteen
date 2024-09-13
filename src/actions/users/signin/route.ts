@@ -3,6 +3,7 @@
 import connectDB from "@/db/connection";
 import User from "@/models/user.model";
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
 
 export async function signInUser(formData: FormData) {
     try {
@@ -40,19 +41,27 @@ export async function signInUser(formData: FormData) {
         }
 
         // If password matches, return success response
-        return {
-            success: true,
-            statusCode: 200,
-            message: "User signed in successfully",
-            user: {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                gender: user.gender,
-                phone: user.phone,
-                profileImage: user.profileImage
-            }
-        };
+
+        else{
+            const token = jwt.sign({id:user._id}, process.env.TOKEN_SECRET_KEY, {
+                expiresIn:"1h"
+              });
+              return {
+                success: true,
+                statusCode: 200,
+                message: "User signed in successfully",
+                user: {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    gender: user.gender,
+                    phone: user.phone,
+                    profileImage: user.profileImage
+                },
+                token
+            };
+        }
+
 
     } catch (error: any) {
         console.error("Error signing in User:", error);

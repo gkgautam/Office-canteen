@@ -1,8 +1,14 @@
 "use client";
+import React from 'react';
 import { signInUser } from '@/actions/users/signin/route';
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import React from 'react';
+import { setCookie, parseCookies } from 'nookies';
+// import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation'; // Ensure the correct import
+// import userStore from '@/store/user';
+
+
 
 interface SignInValues {
   email: string;
@@ -10,20 +16,28 @@ interface SignInValues {
 }
 
 function SignIn() {
+const router = useRouter();
+// const [userStoreData,addUserData]= userStore();
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
     onSubmit: async (values: SignInValues) => {
-        console.log('signin:',values);
+        console.log('signin given:',values);
         const formData = new FormData();
         // console.log('superman',value);
         formData.append("email", values.email);
         formData.append("password", values.password);
         const res = await signInUser(formData);
-    // console.log(res);
+
+    console.log(res);
       alert(res.message);
+      if(res.message==='User signed in successfully'){
+        // addUserData(res.user)
+        setCookie(null, 'token', res.token, {secure:true});
+        router.push("/user/home");
+      }
     },
   });
 
@@ -93,7 +107,7 @@ function SignIn() {
               </button>
             </div>
           </form>
-          <Link href="/user/signup" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+          Not registered?..<Link href="/user/signup" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
           signup
           </Link>
         </div>
