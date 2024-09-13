@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^5.4.1",
     "@preline/toggle-count": "^2.4.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.4.0",

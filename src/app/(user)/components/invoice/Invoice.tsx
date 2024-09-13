@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Invoice({ order }) {
+function Invoice({ order, id }) {
 
   console.log("asdasdasd", order);
 
@@ -12,32 +12,31 @@ function Invoice({ order }) {
           className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
           aria-haspopup="dialog"
           aria-expanded="false"
-          aria-controls="hs-ai-modal"
-          data-hs-overlay="#hs-ai-modal"
+          aria-controls={id}
+          data-hs-overlay={`#${id}`}
         >
           Invoice
         </button>
       </div>
-
       {/* Modal */}
-
       <div
-        id="hs-ai-modal"
+        id={id}
         className="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
         role="dialog"
         tabIndex={-1}
-        aria-labelledby="hs-ai-modal-label"
+        aria-labelledby={`${id}-label`}
       >
         <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
           <div className="relative flex flex-col bg-white shadow-lg rounded-xl pointer-events-auto dark:bg-neutral-800">
             <div className="relative overflow-hidden min-h-32 bg-gray-900 text-center rounded-t-xl dark:bg-neutral-950">
+              {/* Close Button */}
               <div className="absolute top-2 end-2">
                 <button
                   type="button"
                   className="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-white/10 text-white hover:bg-white/20 focus:outline-none focus:bg-white/20 disabled:opacity-50 disabled:pointer-events-none"
                   aria-label="Close"
-                  data-hs-overlay="#hs-bg-gray-on-hover-cards"
-                  data-hs-remove-element="#hs-ai-modal"
+                  data-hs-overlay={`#${id}`}
+                  data-hs-remove-element={`#${id}`}
                 >
                   <span className="sr-only">Close</span>
                   <svg
@@ -57,6 +56,8 @@ function Invoice({ order }) {
                   </svg>
                 </button>
               </div>
+              {/* End Close Button */}
+              {/* SVG Background Element */}
               <figure className="absolute inset-x-0 bottom-0 -mb-px">
                 <svg
                   preserveAspectRatio="none"
@@ -72,8 +73,10 @@ function Invoice({ order }) {
                   />
                 </svg>
               </figure>
+              {/* End SVG Background Element */}
             </div>
             <div className="relative z-10 -mt-12">
+              {/* Icon */}
               <span className="mx-auto flex justify-center items-center size-[62px] rounded-full border border-gray-200 bg-white text-gray-700 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400">
                 <svg
                   className="shrink-0 size-6"
@@ -87,11 +90,13 @@ function Invoice({ order }) {
                   <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z" />
                 </svg>
               </span>
+              {/* End Icon */}
             </div>
+            {/* Body */}
             <div className="p-4 sm:p-7 overflow-y-auto">
               <div className="text-center">
                 <h3
-                  id="hs-ai-modal-label"
+                  id={id}
                   className="text-lg font-semibold text-gray-800 dark:text-neutral-200"
                 >
                   Invoice from Preline
@@ -100,6 +105,7 @@ function Invoice({ order }) {
                   Invoice #3682303
                 </p>
               </div>
+              {/* Grid */}
               <div className="mt-5 sm:mt-10 grid grid-cols-2 sm:grid-cols-3 gap-5">
                 <div>
                   <span className="block text-xs uppercase text-gray-500 dark:text-neutral-500">
@@ -109,6 +115,7 @@ function Invoice({ order }) {
                     ₹{order.paymentDetails.grandTotal}
                   </span>
                 </div>
+                {/* End Col */}
                 <div>
                   <span className="block text-xs uppercase text-gray-500 dark:text-neutral-500">
                     Date paid:
@@ -121,6 +128,7 @@ function Invoice({ order }) {
                     }).format(new Date(order.createdAt))}
                   </span>
                 </div>
+                {/* End Col */}
                 <div>
                   <span className="block text-xs uppercase text-gray-500 dark:text-neutral-500">
                     Payment method:
@@ -156,7 +164,9 @@ function Invoice({ order }) {
                     </span>
                   </div>
                 </div>
+                {/* End Col */}
               </div>
+              {/* End Grid */}
               <div className="mt-5 sm:mt-10">
                 <h4 className="text-xs font-semibold uppercase text-gray-800 dark:text-neutral-200">
                   Summary
@@ -182,6 +192,7 @@ function Invoice({ order }) {
                   </li>
                 </ul>
               </div>
+              {/* Button */}
               <div className="mt-5 flex justify-end gap-x-2">
                 <a
                   className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none focus:outline-none focus:bg-gray-50 dark:bg-transparent dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
@@ -228,6 +239,7 @@ function Invoice({ order }) {
                   Print
                 </a>
               </div>
+              {/* End Buttons */}
               <div className="mt-5 sm:mt-10">
                 <p className="text-sm text-gray-500 dark:text-neutral-500">
                   If you have any questions, please contact us at{" "}
@@ -247,9 +259,11 @@ function Invoice({ order }) {
                 </p>
               </div>
             </div>
+            {/* End Body */}
           </div>
         </div>
       </div>
+      {/* End Modal */}
     </>
   )
 }
