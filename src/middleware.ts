@@ -1,19 +1,45 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { jwtVerify } from "jose";
+// This function can be marked `async` if using `await` inside
 
-// This Middleware does not protect any routes by default.
-// See https://clerk.com/docs/references/nextjs/clerk-middleware for more information about configuring your Middleware
+const jwtConfig = {
+  secret: new TextEncoder().encode('geJo7WBbBPq2OCz11fMqyyXeTKDZ7bT6'),
+}
 
-const isProtectedRoute = createRouteMatcher(['/', '/user/home'])
+export async function middleware(request: NextRequest) {
 
-export default clerkMiddleware((auth, req) => {
-  if (isProtectedRoute(req)) auth().protect()
-})
+  const token = request.cookies.get('token')?.value;
+  const { pathname } = request.nextUrl;
 
+  try {
+    if (token) {
+      const { payload } = await jwtVerify(token, jwtConfig.secret, { typ: "JWT" });
+      console.log(payload);
+    }
+
+    if (request.nextUrl.pathname.startsWith('/user') && token) {
+      return;
+    }
+
+    else if (pathname === "/signin" && token) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+
+    else if (pathname === "/signup" && token) {
+      return NextResponse.redirect(new URL('/', request.url))
+    }
+
+    else if (request.nextUrl.pathname.startsWith('/user') && !token) {
+      return NextResponse.redirect(new URL('/signin', request.url))
+    }
+
+  } catch (error: any) {
+    console.log("ERROR: ", error.message);
+  }
+}
+
+// See "Matching Paths" below to learn more
 export const config = {
-  matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    // Always run for API routes
-    "/(api|trpc)(.*)"
-  ],
-};
+  matcher: ['/user/:path*', '/signin', '/signup'],
+}

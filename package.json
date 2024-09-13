@@ -9,19 +9,23 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^5.4.1",
     "@preline/toggle-count": "^2.4.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.4.0",
     "formik": "^2.4.6",
+    "jose": "^5.9.1",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.2",
     "next": "14.2.5",
+    "nookies": "^2.5.2",
     "preline": "^2.4.1",
     "react": "^18",
     "react-dom": "^18",
     "zustand": "^4.5.5"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
