@@ -37,7 +37,7 @@ function SignIn() {
 
       if (res.success && res.token) {
         // addUserData(res.user)
-        setCookie(null, 'token', res.token, { secure:true, path: "/" });
+        setCookie(null, 'token', res.token, { secure: true, path: "/" });
         router.push("/user/home");
       }
     },

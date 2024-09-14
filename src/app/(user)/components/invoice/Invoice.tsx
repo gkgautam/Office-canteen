@@ -2,8 +2,6 @@ import React from 'react'
 
 function Invoice({ order, id }) {
 
-  console.log("asdasdasd", order);
-
   return (
     <>
       <div className="text-center">

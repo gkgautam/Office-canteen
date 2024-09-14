@@ -60,7 +60,7 @@ export async function signInUser(formData: FormData): Promise<SignInResponse> {
 		// If password matches, return success response
 
 		else {
-			const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET_KEY!, {
+			const token = jwt.sign({ id: user._id, email: user.email }, process.env.TOKEN_SECRET_KEY!, {
 				expiresIn: "1h"
 			});
 
