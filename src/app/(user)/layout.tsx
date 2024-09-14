@@ -1,13 +1,16 @@
+'use client';
 import Image from "next/image";
 import Link from "next/link";
 import CompanyLogo from "/public/company-logo-3.png"
 import Process from "./components/process/Process";
+import useUserStore from "@/store/user";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const{user} = useUserStore();
   return (
     <>
       {/* ========== HEADER ========== */}
@@ -15,18 +18,20 @@ export default function RootLayout({
         <nav className=" mx-auto w-full flex md:grid md:grid-cols-3 md:gap-x-1 basis-full items-center w-full mx-auto px-4 sm:px-6 lg:px-8">
           <div className="me-5">
             {/* Logo */}
-            <a
-              className="flex-none rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
-              href="#"
+            <div
+              className="flex rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
               aria-label="Preline"
             >
+              <Link href="/">
               <Image
                 src={CompanyLogo}
                 width={60}
                 height={20}
                 alt="company-logo"
               />
-            </a>
+              </Link>
+              <p className="text-white text-center flex justify-center items-center px-10">{user?.firstName}</p>
+            </div>
             {/* End Logo */}
           </div>
           <div className="hidden md:block">
@@ -51,7 +56,7 @@ export default function RootLayout({
               </div>
               <input
                 type="text"
-                className="py-2 ps-10 pe-16 block w-full bg-transparent border-gray-700 rounded-lg text-sm focus:outline-none focus:border-gray-600 focus:ring-0 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:focus:border-neutral-600"
+                className="py-2 text-white ps-10 pe-16 block w-full bg-transparent border-gray-700 rounded-lg text-sm focus:outline-none focus:border-gray-600 focus:ring-0 disabled:opacity-50 disabled:pointer-events-none dark:border-neutral-700 dark:text-neutral-400 dark:placeholder:text-neutral-400 dark:focus:border-neutral-600"
                 placeholder="Search"
               />
               <div className="hidden absolute inset-y-0 end-0 flex items-center pointer-events-none z-20 pe-1">
@@ -235,9 +240,11 @@ export default function RootLayout({
                 aria-expanded="false"
                 aria-label="Dropdown"
               >
-                <img
+                <Image
                   className="shrink-0 size-[38px] rounded-full"
-                  src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=facearea&facepad=2&w=320&h=320&q=80"
+                  src={user?.profileImage!}
+                  width={120}
+                  height={120}
                   alt="Avatar"
                 />
               </button>
@@ -252,7 +259,7 @@ export default function RootLayout({
                     Signed in as
                   </p>
                   <p className="text-sm font-medium text-gray-800 dark:text-neutral-200">
-                    james@site.com
+                   {user?.email}
                   </p>
                 </div>
                 <div className="p-1.5 space-y-0.5">

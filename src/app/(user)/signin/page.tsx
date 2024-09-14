@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { setCookie, parseCookies } from 'nookies';
 // import { useRouter } from 'next/router';
 import { useRouter } from 'next/navigation'; // Ensure the correct import
+import useUserStore from '@/store/user';
 import { truncate } from 'fs';
 // import userStore from '@/store/user';
 
@@ -15,9 +16,28 @@ interface SignInValues {
   password: string;
 }
 
-function SignIn() {
+interface UserDataProps {
+  profileImage: string | null | undefined;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone:string // Changed type to File | null
+  gender:string
+}
 
+function SignIn() {
+  // const {setUser,user} = useUserStore();
   const router = useRouter();
+  const { updateUser,setUser,user } = useUserStore.getState();
+
+  const handleLoginSuccess = (userData: UserDataProps) => {
+    setUser(userData);
+    console.log('first user',user);
+  };
+  const handleUpdateUser = (updatedData: Partial<UserDataProps>) => {
+    updateUser(updatedData);
+    console.log('updated user',user);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -38,6 +58,7 @@ function SignIn() {
       if (res.success && res.token) {
         // addUserData(res.user)
         setCookie(null, 'token', res.token, { secure: true, path: "/" });
+        res.user?user?handleUpdateUser(res.user):handleLoginSuccess(res.user):'';
         router.push("/user/home");
       }
     },
@@ -109,7 +130,7 @@ function SignIn() {
               </button>
             </div>
           </form>
-          Not registered?..<Link href="/user/signup" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
+          Not registered?..<Link href="/signup" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none">
             signup
           </Link>
         </div>

@@ -2,8 +2,9 @@
 
 import { addOrder } from '@/actions/orders/addOrder';
 import useCartStore from '@/store/cart';
+import useUserStore from '@/store/user';
 import { useRouter } from 'next/navigation';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, use, useEffect, useState } from 'react';
 
 interface MenuDataProps {
   orderDetails: {
@@ -28,6 +29,7 @@ interface MenuDataProps {
 function CheckoutComponent() {
 
   const { data, increaseQuantity, decreaseQuantity, deleteItem } = useCartStore();
+  const {user} = useUserStore();
 
   const [pickupSlot, setPickupSlot] = useState("12pm");
   const [loading, setLoading] = useState(false);
@@ -195,7 +197,7 @@ function CheckoutComponent() {
                         </span>
                         <span className="float-right text-sm text-gray-600 capitalize">{item.menuItemCategory}</span>
                         <p className="float-right text-xs mt-2 text-gray-500">{item.menuItemDescription}</p>
-                        <p className="text-lg font-bold">Rs. {item.menuItemPrice}</p>
+                        <p className="text-lg font-bold">Rs. {item.menuItemPrice*item.quantity}</p>
                         <div className="py-2 inline-block bg-white rounded-lg dark:bg-neutral-900" data-hs-input-number='{"max":10, "min":1}'>
                           <div className="flex items-center gap-x-1.5">
                             <button className='p-1 rounded-full border size-6 flex items-center justify-center font-semibold' onClick={() => { decreaseQuantity(item._id) }}>-</button>
@@ -249,7 +251,7 @@ function CheckoutComponent() {
             <div className="mt-6 border-t border-b py-2">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-gray-900">Order by</p>
-                <p className="font-semibold text-gray-900">email@gmail.com</p>
+                <p className="font-semibold text-gray-900">{user?.email}</p>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-gray-900">Subtotal</p>

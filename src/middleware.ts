@@ -32,6 +32,9 @@ export async function middleware(request: NextRequest) {
     }
     else {
       if (pathname !== "/signin") {
+        if(pathname === "/signup"){
+          return;
+        }
         return NextResponse.redirect(new URL('/signin', request.url));
       }
     }
