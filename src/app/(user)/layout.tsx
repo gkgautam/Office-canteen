@@ -5,6 +5,7 @@ import Link from "next/link";
 import CompanyLogo from "/public/company-logo-3.png"
 import useUserStore from "@/store/user";
 import { useEffect, useState } from "react";
+import Logouthandler from "./components/Logouthandler/Logouthandler";
 
 export default function RootLayout({
   children,
@@ -255,8 +256,8 @@ export default function RootLayout({
               >
                 {
                   mounted && <Image
-                    className="shrink-0 size-[38px] rounded-full"
-                    src={user?.profileImage!}
+                    className="shrink-0 size-[38px] rounded-full text-white"
+                    src={user?.profileImage ? user.profileImage : ''}
                     width={120}
                     height={120}
                     alt="Avatar"
@@ -344,9 +345,8 @@ export default function RootLayout({
                     </svg>
                     Downloads
                   </a>
-                  <a
+                  <div
                     className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                    href="#"
                   >
                     <svg
                       className="shrink-0 size-4"
@@ -365,8 +365,8 @@ export default function RootLayout({
                       <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
-                    Team Account
-                  </a>
+                  <Logouthandler/>
+                  </div>
                 </div>
               </div>
             </div>

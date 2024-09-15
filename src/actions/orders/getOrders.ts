@@ -3,7 +3,7 @@
 import connectDB from "@/db/connection";
 import Order from "@/models/order.model";
 
-export async function getAllMyOrders(myEmail: string) {
+export async function getAllMyOrders(myEmail: string ) {
   try {
     await connectDB(); // Ensure DB connection is established
 

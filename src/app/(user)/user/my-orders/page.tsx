@@ -1,6 +1,7 @@
 import { getAllMyOrders } from '@/actions/orders/getOrders';
 import React from 'react';
 import Invoice from '../../components/invoice/Invoice';
+// import useUserStore from '@/store/user';
 
 // interface PaymentDetails {
 //   order_by_email: string;
@@ -37,8 +38,8 @@ import Invoice from '../../components/invoice/Invoice';
 // }
 
 const MyOrdersPage = async () => {
-
-  const myOrders = await getAllMyOrders("test@gmail.com");
+  // const {user}= useUserStore();
+  const myOrders = await getAllMyOrders('batman@gmail.com');
   // console.log('batman2', typeof myOrders.data[0].paymentDetails.subTotal);
 
   if (!myOrders.success) {
@@ -47,9 +48,9 @@ const MyOrdersPage = async () => {
 
   return (
     <>
-      to do
       <div className="grid gap-8">
         {
+          myOrders.data && myOrders.data.length > 0 ? (
           myOrders.data && myOrders.data.map((order, index) => {
             return (
               // <Link href="/orderitems" key={index}> 
@@ -84,7 +85,11 @@ const MyOrdersPage = async () => {
               </div>
               // </Link>
             )
-          })
+          })):(<div className="text-center p-6 bg-gray-100 rounded-lg">
+            <h2 className="text-xl font-semibold text-gray-800">No Orders Found</h2>
+            <p className="text-gray-600 mt-2">You have no order history at this moment.</p>
+            <p className="text-gray-500 mt-1">Check back later or browse our menu to place a new order.</p>
+          </div>)
         }
       </div>
     </>
