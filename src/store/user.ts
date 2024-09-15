@@ -37,9 +37,17 @@ const useUserStore = create<UserStoreProps>()(
   )
 );
 
-const useSession = create((state) => ({
+interface UseSessionProps {
+  isLoggedIn: boolean;
+  isLoading: boolean;
+  session: { id: string; email: string } | null
+  checkUserSession: () => void;
+}
+
+const useSession = create<UseSessionProps>((state) => ({
   isLoggedIn: false,
   isLoading: true,
+  session: null,
   checkUserSession: async () => {
     try {
       const getSession = await checkSession();
