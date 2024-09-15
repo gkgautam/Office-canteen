@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/navigation';
-import useUserStore from '@/store/user';
+import {useUserStore} from '@/store/user';
 import { destroyCookie } from 'nookies';
 
 function Logouthandler() {

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { setCookie, parseCookies } from 'nookies';
 // import { useRouter } from 'next/router';
 import { useRouter } from 'next/navigation'; // Ensure the correct import
-import useUserStore from '@/store/user';
+import {useUserStore} from '@/store/user';
 import { truncate } from 'fs';
 // import userStore from '@/store/user';
 
