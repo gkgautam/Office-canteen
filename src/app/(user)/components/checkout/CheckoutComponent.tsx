@@ -28,7 +28,7 @@ interface MenuDataProps {
 
 function CheckoutComponent() {
 
-  const { data, increaseQuantity, decreaseQuantity, deleteItem } = useCartStore();
+  const { data, increaseQuantity, decreaseQuantity, deleteItem,orderItemId,setOrderItemId } = useCartStore();
   const {user} = useUserStore();
 
   const [pickupSlot, setPickupSlot] = useState("12pm");
@@ -57,11 +57,23 @@ function CheckoutComponent() {
     pickup_slot_time: ""
   });
 
+
   useEffect(() => {
+    let itemsToDisplay = data;
+    if (orderItemId) {
+      itemsToDisplay = data.filter(item => item._id === orderItemId);
+    }
+    
+    const totalAmount = itemsToDisplay.reduce((total, item) => {
+      return total + (item.menuItemPrice * item.quantity);
+    }, 0);
+    
+    const shippingCharge = 1;
+
     setOrderData({
-      orderDetails: data,
+      orderDetails: itemsToDisplay,
       paymentDetails: {
-        order_by_email: "pankaj@gmail.com",
+        order_by_email: user?.email || "",
         subTotal: totalAmount,
         shippingCharge: shippingCharge,
         grandTotal: totalAmount + shippingCharge
@@ -69,7 +81,7 @@ function CheckoutComponent() {
       orderStatus: "confirmed",
       pickup_slot_time: pickupSlot
     });
-  }, [data, pickupSlot])
+  }, [data, pickupSlot, orderItemId, user?.email]);
 
   async function handleOrderSubmit() {
     setLoading(true);
@@ -79,6 +91,7 @@ function CheckoutComponent() {
       for (let i = 0; i < data.length; i++) {
         deleteItem(data[i]._id);
       }
+      setOrderItemId(null);
       router.push("/user/my-orders");
     }
     else {

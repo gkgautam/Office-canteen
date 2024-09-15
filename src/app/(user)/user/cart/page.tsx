@@ -6,7 +6,7 @@ import React from 'react';
 
 const UserCart = () => {
 
-  const { data, increaseQuantity, decreaseQuantity, deleteItem } = useCartStore();
+  const { data, increaseQuantity, decreaseQuantity, deleteItem,setOrderItemId } = useCartStore();
 
   return (
     <>
@@ -57,7 +57,7 @@ const UserCart = () => {
         </div>
       </div>
       <div className="mt-6">
-        <Link href="/user/checkout" className='py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:bg-gray-600 disabled:opacity-50 disabled:pointer-events-none'>
+        <Link onClick={()=>setOrderItemId(null)} href="/user/checkout" className='py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-gray-500 text-white hover:bg-gray-600 focus:outline-none focus:bg-gray-600 disabled:opacity-50 disabled:pointer-events-none'>
           Place your order
         </Link>
       </div>

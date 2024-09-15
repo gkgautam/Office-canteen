@@ -4,6 +4,7 @@ import useCartStore from '@/store/cart';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
+import { useRouter } from 'next/navigation';
 
 interface MenuData {
   currentItem: {
@@ -19,11 +20,28 @@ interface MenuData {
 
 function Cards({ currentItem }: MenuData) {
 
-  const { addItem, data } = useCartStore();
+  const { addItem, data, setOrderItemId } = useCartStore();
+  const router = useRouter();
 
   const saveToCart = () => {
     addItem(currentItem);
   }
+
+  const handleOrderNow = () => {
+    // Check if the item is already in the cart
+    const isItemInCart = data.some(item => item._id === currentItem._id);
+
+    if (!isItemInCart) {
+      // Add item to cart if not already present
+      addItem(currentItem);
+    }
+
+    // Update the order state with the item ID
+    setOrderItemId(currentItem._id);
+
+    // Redirect to the checkout page
+    router.push('/user/checkout');
+  };
 
   return (
     <>
@@ -62,6 +80,7 @@ function Cards({ currentItem }: MenuData) {
             </button>
           }
           <button
+          onClick={handleOrderNow}
             className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
           >
             Order Now
