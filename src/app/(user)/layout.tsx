@@ -1,37 +1,50 @@
 'use client';
+
 import Image from "next/image";
 import Link from "next/link";
 import CompanyLogo from "/public/company-logo-3.png"
-import Process from "./components/process/Process";
 import useUserStore from "@/store/user";
+import { useEffect, useState } from "react";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const{user} = useUserStore();
+
+  const { user } = useUserStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, [])
+
+  if (!mounted) {
+    return;
+  }
+
   return (
     <>
-      {/* ========== HEADER ========== */}
       <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-gray-900 border-b text-sm py-2.5  dark:bg-neutral-950 dark:border-neutral-700">
         <nav className=" mx-auto w-full flex md:grid md:grid-cols-3 md:gap-x-1 basis-full items-center w-full mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="me-5">
-            {/* Logo */}
-            <div
-              className="flex rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
-              aria-label="Preline"
-            >
-              <Link href="/">
+
+          {/* Logo */}
+          <div
+            className="flex me-5 rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
+            aria-label="Preline"
+          >
+            <Link href="/">
               <Image
                 src={CompanyLogo}
                 width={60}
                 height={20}
                 alt="company-logo"
               />
-              </Link>
-              <p className="text-white text-center flex justify-center items-center px-10">{user?.firstName}</p>
-            </div>
+            </Link>
+            {
+              mounted && <span className="text-white text-center flex justify-center items-center px-10">{user?.firstName}</span>
+            }
+
             {/* End Logo */}
           </div>
           <div className="hidden md:block">
@@ -240,13 +253,16 @@ export default function RootLayout({
                 aria-expanded="false"
                 aria-label="Dropdown"
               >
-                <Image
-                  className="shrink-0 size-[38px] rounded-full"
-                  src={user?.profileImage!}
-                  width={120}
-                  height={120}
-                  alt="Avatar"
-                />
+                {
+                  mounted && <Image
+                    className="shrink-0 size-[38px] rounded-full"
+                    src={user?.profileImage!}
+                    width={120}
+                    height={120}
+                    alt="Avatar"
+                  />
+                }
+
               </button>
               <div
                 className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full"
@@ -259,7 +275,7 @@ export default function RootLayout({
                     Signed in as
                   </p>
                   <p className="text-sm font-medium text-gray-800 dark:text-neutral-200">
-                   {user?.email}
+                    {mounted && user?.email}
                   </p>
                 </div>
                 <div className="p-1.5 space-y-0.5">
@@ -358,8 +374,7 @@ export default function RootLayout({
           </div>
         </nav>
       </header>
-      {/* ========== END HEADER ========== */}
-      {/* ========== MAIN CONTENT ========== */}
+
       <main id="content">
         {/* Secondary Navbar */}
         <div className="md:py-4 bg-white md:border-b border-gray-200 dark:bg-neutral-800 dark:border-neutral-700">
@@ -644,7 +659,7 @@ export default function RootLayout({
           {children}
         </div>
       </main>
-      {/* ========== FOOTER ========== */}
+
       <footer className="mt-auto bg-gray-900 w-full dark:bg-neutral-950">
         <div className="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 lg:pt-20 mx-auto">
           {/* Grid */}
@@ -850,8 +865,6 @@ export default function RootLayout({
           </div>
         </div>
       </footer>
-      {/* ========== END FOOTER ========== */}
-      {/* ========== END MAIN CONTENT ========== */}
     </>
   );
 }

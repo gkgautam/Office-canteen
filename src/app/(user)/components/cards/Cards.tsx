@@ -20,7 +20,7 @@ interface MenuData {
 
 function Cards({ currentItem }: MenuData) {
 
-  const { addItem, data, setOrderItemId } = useCartStore();
+  const { addItem, data, orderItemId, setOrderItemId } = useCartStore();
   const router = useRouter();
 
   const saveToCart = () => {
@@ -31,6 +31,7 @@ function Cards({ currentItem }: MenuData) {
     // Check if the item is already in the cart
     const isItemInCart = data.some(item => item._id === currentItem._id);
 
+   
     if (!isItemInCart) {
       // Add item to cart if not already present
       addItem(currentItem);
@@ -38,7 +39,7 @@ function Cards({ currentItem }: MenuData) {
 
     // Update the order state with the item ID
     setOrderItemId(currentItem._id);
-
+    
     // Redirect to the checkout page
     router.push('/user/checkout');
   };
@@ -49,7 +50,7 @@ function Cards({ currentItem }: MenuData) {
         <div className=" flex flex-col justify-center items-center bg-blue-600 rounded-t-xl">
           {
             currentItem.menuItemImage !== null &&
-            <Image className='w-full h-60 object-cover' src={currentItem.menuItemImage} width={500} height={500} alt='MenuItem Image' />
+            <img className='w-full h-60 object-cover' src={currentItem.menuItemImage}  width={500} height={500} alt='MenuItem Image' />
           }
         </div>
         <div className="p-4 md:p-6 h-full">
@@ -80,7 +81,7 @@ function Cards({ currentItem }: MenuData) {
             </button>
           }
           <button
-          onClick={handleOrderNow}
+            onClick={handleOrderNow}
             className="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium bg-white text-gray-800 shadow-sm hover:bg-gray-100 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800 dark:focus:bg-neutral-800"
           >
             Order Now

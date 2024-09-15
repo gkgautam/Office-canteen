@@ -38,9 +38,8 @@ import Invoice from '../../components/invoice/Invoice';
 
 const MyOrdersPage = async () => {
 
-  const myOrders = await getAllMyOrders("pankaj@gmail.com");
+  const myOrders = await getAllMyOrders("test@gmail.com");
   // console.log('batman2', typeof myOrders.data[0].paymentDetails.subTotal);
-
 
   if (!myOrders.success) {
     return <div>Error loading orders</div>;
@@ -68,7 +67,7 @@ const MyOrdersPage = async () => {
                     </div>
                     <div className="flex w-full flex-col px-4">
                       <span className="font-semibold capitalize">
-                        {order.orderDetails[0].menuItemName} (+{order.orderDetails.length} items)
+                        {order.orderDetails[0].menuItemName} {order.orderDetails.length <= 1 ? "" : `+ ${order.orderDetails.length} items`}
                       </span>
                       <span className="float-right text-sm text-gray-600 capitalize">{order.orderDetails[0].menuItemCategory}</span>
                       <p className="float-right text-xs mt-2 text-gray-500">{order.orderDetails[0].menuItemDescription}</p>
