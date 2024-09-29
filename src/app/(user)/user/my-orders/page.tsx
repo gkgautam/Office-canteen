@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllMyOrders } from '@/actions/orders/getOrders';
+import { getAllMyOrders } from '@/actions/orders/getAllMyOrders';
 import React, { useEffect, useState } from 'react';
 import Invoice from '../../components/invoice/Invoice';
 import { useUserStore } from '@/store/user';
@@ -64,7 +64,7 @@ const MyOrdersPage = () => {
         {
           myOrders && myOrders.length > 0 ? myOrders.map((order, index) => {
             return (
-              <div className={`rounded-lg flex justify-between border bg-white px-2 py-4 sm:px-6`} key={index} >
+              <div className={`rounded-lg flex justify-between border bg-white px-2 py-4 sm:px-6`} key={index}>
                 <div className={`flex items-center justify-between`} >
                   <div className="flex flex-col rounded-lg w-full bg-white sm:flex-row">
                     <div className="w-52 h-32">

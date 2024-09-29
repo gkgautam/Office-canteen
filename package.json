@@ -12,6 +12,7 @@
     "@preline/toggle-count": "^2.4.1",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.4.0",
+    "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "framer-motion": "^11.5.4",
     "jose": "^5.9.1",

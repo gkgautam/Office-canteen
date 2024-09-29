@@ -3,17 +3,18 @@
 import connectDB from "@/db/connection";
 import Order from "@/models/order.model";
 
-export async function getOrders() {
+export async function getAllMyOrders(myEmail: string) {
   try {
     await connectDB(); // Ensure DB connection is established
 
-    const allOrders = await Order.find({});
+    const allMyOrders = await Order.find({ 'paymentDetails.order_by_email': myEmail }).exec();
 
-    if (allOrders) {
+    if (allMyOrders) {
       return {
         success: true,
         statusCode: 201,
-        data: JSON.stringify(allOrders)
+        message: "Order Placed",
+        data: JSON.stringify(allMyOrders)
       };
     }
     else {

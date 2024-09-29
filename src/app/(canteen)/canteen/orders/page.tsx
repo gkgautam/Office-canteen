@@ -1,10 +1,18 @@
 import React from 'react'
 import Orderlist from '../../components/Orderlist'
+import { getOrders } from '@/actions/orders/getOrders';
 
-function CanteenOrder() {
+async function CanteenOrder() {
+
+  let data = null;
+  const res = await getOrders();
+  if (res.success && res.data) {
+    data = JSON.parse(res.data);
+  }
+
   return (
     <>
-    <Orderlist/>
+      <Orderlist data={data} />
     </>
   )
 }
