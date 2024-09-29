@@ -2,6 +2,7 @@
 
 import { addOrder } from '@/actions/orders/addOrder';
 import useCartStore from '@/store/cart';
+import useUserStore from '@/store/user';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
@@ -27,7 +28,8 @@ interface MenuDataProps {
 
 function CheckoutComponent() {
 
-  const { data, increaseQuantity, decreaseQuantity, deleteItem } = useCartStore();
+  const { data, increaseQuantity, decreaseQuantity, deleteItem, orderItemId, setOrderItemId } = useCartStore();
+  const { user } = useUserStore();
 
   const [pickupSlot, setPickupSlot] = useState("12pm");
   const [loading, setLoading] = useState(false);
@@ -37,9 +39,9 @@ function CheckoutComponent() {
     setPickupSlot(event.target.value)
   }
 
-  const totalAmount = data.reduce((total, item) => {
-    return total + (item.menuItemPrice * item.quantity);
-  }, 0);
+  // const totalAmount = data.reduce((total, item) => {
+  //   return total + (item.menuItemPrice * item.quantity);
+  // }, 0);
 
   const shippingCharge = 1;
 
@@ -55,11 +57,25 @@ function CheckoutComponent() {
     pickup_slot_time: ""
   });
 
+
   useEffect(() => {
+
+    let itemsToDisplay = data;
+
+    if (orderItemId) {
+      itemsToDisplay = data.filter(item => item._id === orderItemId);
+    }
+
+    const totalAmount = itemsToDisplay.reduce((total, item) => {
+      return total + (item.menuItemPrice * item.quantity);
+    }, 0);
+
+    const shippingCharge = 1;
+
     setOrderData({
-      orderDetails: data,
+      orderDetails: itemsToDisplay,
       paymentDetails: {
-        order_by_email: "pankaj@gmail.com",
+        order_by_email: user?.email || "",
         subTotal: totalAmount,
         shippingCharge: shippingCharge,
         grandTotal: totalAmount + shippingCharge
@@ -67,7 +83,8 @@ function CheckoutComponent() {
       orderStatus: "confirmed",
       pickup_slot_time: pickupSlot
     });
-  }, [data, pickupSlot])
+
+  }, [data, pickupSlot, orderItemId, user?.email]);
 
   async function handleOrderSubmit() {
     setLoading(true);
@@ -77,6 +94,7 @@ function CheckoutComponent() {
       for (let i = 0; i < data.length; i++) {
         deleteItem(data[i]._id);
       }
+      setOrderItemId(null);
       router.push("/user/my-orders");
     }
     else {
@@ -176,7 +194,7 @@ function CheckoutComponent() {
 
           <div className="rounded-lg border bg-white px-2 py-6 sm:px-6 space-y-6">
             {
-              data.map((item, index) => {
+              orderData.orderDetails.map((item, index) => { // cart array
                 return (
                   <div className={`flex items-center justify-between`} key={index}>
                     <div className="flex flex-col rounded-lg w-full bg-white sm:flex-row">
@@ -195,7 +213,7 @@ function CheckoutComponent() {
                         </span>
                         <span className="float-right text-sm text-gray-600 capitalize">{item.menuItemCategory}</span>
                         <p className="float-right text-xs mt-2 text-gray-500">{item.menuItemDescription}</p>
-                        <p className="text-lg font-bold">Rs. {item.menuItemPrice}</p>
+                        <p className="text-lg font-bold">Rs. {item.menuItemPrice * item.quantity}</p>
                         <div className="py-2 inline-block bg-white rounded-lg dark:bg-neutral-900" data-hs-input-number='{"max":10, "min":1}'>
                           <div className="flex items-center gap-x-1.5">
                             <button className='p-1 rounded-full border size-6 flex items-center justify-center font-semibold' onClick={() => { decreaseQuantity(item._id) }}>-</button>
@@ -206,7 +224,6 @@ function CheckoutComponent() {
                         <button onClick={() => deleteItem(item._id)} className='bg-rose-100 w-fit px-3 py-1 rounded-lg hover:bg-rose-400 hover:text-rose-100 text-rose-500 transition-colors'>Remove</button>
                       </div>
                     </div>
-
                   </div>
                 )
               })
@@ -249,11 +266,11 @@ function CheckoutComponent() {
             <div className="mt-6 border-t border-b py-2">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-gray-900">Order by</p>
-                <p className="font-semibold text-gray-900">email@gmail.com</p>
+                <p className="font-semibold text-gray-900">{user?.email}</p>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-gray-900">Subtotal</p>
-                <p className="font-semibold text-gray-900">Rs. {totalAmount}</p>
+                <p className="font-semibold text-gray-900">Rs. {orderData.paymentDetails.subTotal}</p>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-gray-900">Desk Shipping</p>
@@ -262,7 +279,7 @@ function CheckoutComponent() {
             </div>
             <div className="mt-6 flex items-center justify-between">
               <p className="text-sm font-medium text-gray-900">Grand Total</p>
-              <p className="text-2xl font-semibold text-gray-900">Rs {totalAmount + shippingCharge}</p>
+              <p className="text-2xl font-semibold text-gray-900">Rs {orderData.paymentDetails.grandTotal}</p>
             </div>
           </div>
           <button onClick={handleOrderSubmit} className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">

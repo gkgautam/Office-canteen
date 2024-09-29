@@ -17,6 +17,8 @@ interface CartProps {
   deleteItem: (id: string) => void;
   increaseQuantity: (id: string) => void;
   decreaseQuantity: (id: string) => void;
+  setOrderItemId: (id: string |null ) => void; // Method to set the single item ID for the order
+  orderItemId: string | null; // Single item ID for the order
 }
 
 const MAX_QUANTITY = 10; // Define the maximum quantity value
@@ -25,6 +27,7 @@ const useCartStore = create<CartProps>()(
   persist(
     (set) => ({
       data: [],
+      orderItemId: null,
       addItem: (newItem) => set((state) => {
 
         const existingItemIndex = state.data.findIndex(item => item._id === newItem._id);
@@ -64,7 +67,8 @@ const useCartStore = create<CartProps>()(
             : item
         );
         return { data: updatedData };
-      })
+      }),
+      setOrderItemId: (id) => set({ orderItemId: id })
     }),
     {
       name: "canteen-cart",
