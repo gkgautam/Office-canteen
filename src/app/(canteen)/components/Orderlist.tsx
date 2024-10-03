@@ -31,6 +31,7 @@ interface DataProps {
   updatedAt: Date;
 }
 
+const orderStatusOptions = ['confirmed', 'cancelled', 'preparing', 'pending', 'ready', 'completed'];
 
 function Orderlist({ data }: { data: DataProps[] }) {
 
@@ -39,16 +40,36 @@ function Orderlist({ data }: { data: DataProps[] }) {
     return format(date, 'dd/MM/yyyy h:mm:ss a');
   }
 
+  const [orders, setOrders] = useState<DataProps[]>(data);
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
 
   const toggleOrderDetails = (orderId: string) => {
     setExpandedOrder(prev => (prev === orderId ? null : orderId));
   };
 
+  const handleStatusChange = async (orderId: string, newStatus: string) => {
+    // Update local state
+    setOrders(prevOrders =>
+      prevOrders.map(order => 
+        order._id === orderId ? { ...order, orderStatus: newStatus } : order
+      )
+    );
+
+    // Here you would make an API call to update the order status in your database
+    console.log(`Updating order ${orderId} to status: ${newStatus}`);
+    
+    // Example API call (uncomment and implement):
+    // await fetch(`/api/orders/${orderId}`, {
+    //   method: 'PATCH',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ orderStatus: newStatus }),
+    // });
+  };
+
   return (
     <>
       {
-        data.length > 0 && <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+        orders.length > 0 && <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
           <div className="flex flex-col">
             <div className="-m-1.5 overflow-x-auto">
               <div className="p-1.5 min-w-full inline-block align-middle">
@@ -110,7 +131,7 @@ function Orderlist({ data }: { data: DataProps[] }) {
                     </thead>
                     <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
                       {
-                        data.map((order, index) => {
+                        orders.map((order, index) => {
                           return (
                             <>
                               <tr key={index}>
@@ -156,7 +177,17 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                 <td className="size-px whitespace-nowrap">
                                   <div className="px-6 py-3">
                                     <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500 capitalize">
-                                      {order.orderStatus}
+                                    <select
+                                value={order.orderStatus}
+                                onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                                className="bg-transparent rounded-md p-1 text-xs"
+                              >
+                                {orderStatusOptions.map(status => (
+                                  <option key={status} value={status}>
+                                    {status}
+                                  </option>
+                                ))}
+                              </select>
                                     </span>
                                   </div>
                                 </td>
@@ -193,8 +224,9 @@ function Orderlist({ data }: { data: DataProps[] }) {
 
                               <AnimatePresence>
                                 {
+                                   orders.map((order) => (
                                   expandedOrder === order._id && (
-                                    <tr>
+                                    <tr key={order._id}>
                                       <td colSpan={7}>
                                         <motion.div
                                           initial={{ height: 0 }}
@@ -247,6 +279,7 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                       </td>
                                     </tr>
                                   )
+                                ))
                                 }
                               </AnimatePresence>
                             </>
