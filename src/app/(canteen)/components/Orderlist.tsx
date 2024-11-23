@@ -3,6 +3,7 @@
 import { parseISO, format } from 'date-fns';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { updateOrderStatus } from '@/actions/orders/updateOrderStatus';
 
 interface MenuItem {
   _id: string;
@@ -48,23 +49,20 @@ function Orderlist({ data }: { data: DataProps[] }) {
   };
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
+
     // Update local state
     setOrders(prevOrders =>
-      prevOrders.map(order => 
+      prevOrders.map(order =>
         order._id === orderId ? { ...order, orderStatus: newStatus } : order
       )
     );
 
-    // Here you would make an API call to update the order status in your database
-    console.log(`Updating order ${orderId} to status: ${newStatus}`);
-    
-    // Example API call (uncomment and implement):
-    // await fetch(`/api/orders/${orderId}`, {
-    //   method: 'PATCH',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ orderStatus: newStatus }),
-    // });
+    const res = await updateOrderStatus(orderId, newStatus);
+    if (res.success) {
+      alert(`Status Updated ${newStatus}`);
+    }
   };
+
 
   return (
     <>
@@ -177,17 +175,17 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                 <td className="size-px whitespace-nowrap">
                                   <div className="px-6 py-3">
                                     <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500 capitalize">
-                                    <select
-                                value={order.orderStatus}
-                                onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                                className="bg-transparent rounded-md p-1 text-xs"
-                              >
-                                {orderStatusOptions.map(status => (
-                                  <option key={status} value={status}>
-                                    {status}
-                                  </option>
-                                ))}
-                              </select>
+                                      <select
+                                        value={order.orderStatus}
+                                        onChange={(e) => handleStatusChange(order._id, e.target.value)}
+                                        className="bg-transparent rounded-md p-1 text-xs"
+                                      >
+                                        {orderStatusOptions.map(status => (
+                                          <option key={status} value={status}>
+                                            {status}
+                                          </option>
+                                        ))}
+                                      </select>
                                     </span>
                                   </div>
                                 </td>
@@ -221,10 +219,8 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                 </td>
                               </tr>
 
-
                               <AnimatePresence>
                                 {
-                                  //  orders.map((order) => (
                                   expandedOrder === order._id && (
                                     <tr key={order._id}>
                                       <td colSpan={7}>
@@ -279,7 +275,7 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                       </td>
                                     </tr>
                                   )
-                                // ))
+                                  // ))
                                 }
                               </AnimatePresence>
                             </>
@@ -298,4 +294,4 @@ function Orderlist({ data }: { data: DataProps[] }) {
   )
 }
 
-export default Orderlist  
+export default Orderlist
