@@ -258,10 +258,11 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                                             }
                                                           </div>
                                                           <div className="flex w-full flex-col px-4">
+                                                           <p className="text-lg capitalize font-bold">{item.menuItemName}</p>
                                                             <span className="float-right text-sm text-gray-600 capitalize">{item.menuItemCategory}</span>
-                                                            <p className="float-right text-xs mt-2 text-gray-500">{item.menuItemDescription}</p>
+                                              
                                                             <p className="float-right text-xs mt-2 text-gray-500">Quantity: {item.quantity}</p>
-                                                            <p className="text-lg font-bold">Price: Rs. {item.menuItemPrice}</p>
+                                                            <p className="text-sm font-medium">Price: Rs. {item.menuItemPrice}</p>
                                                           </div>
                                                         </div>
                                                       </div>
