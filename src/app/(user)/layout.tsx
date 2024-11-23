@@ -3,9 +3,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import CompanyLogo from "/public/company-logo-3.png"
-import useUserStore from "@/store/user";
+import { useSession, useUserStore } from "@/store/user";
 import { useEffect, useState } from "react";
 import Logouthandler from "./components/Logouthandler/Logouthandler";
+import { IStaticMethods } from "preline/preline";
+
+declare global {
+  interface Window {
+    HSStaticMethods: IStaticMethods;
+  }
+}
 
 export default function RootLayout({
   children,
@@ -15,10 +22,19 @@ export default function RootLayout({
 
   const { user } = useUserStore();
   const [mounted, setMounted] = useState(false);
+  const { isLoggedIn, checkUserSession, isLoading } = useSession();
 
   useEffect(() => {
     setMounted(true);
-  }, [])
+    checkUserSession();
+
+    if (typeof window !== 'undefined') {
+      import('preline/preline').then((preline) => {
+        window.HSStaticMethods.autoInit();
+      });
+    }
+
+  }, [isLoggedIn])
 
   if (!mounted) {
     return;
@@ -27,11 +43,10 @@ export default function RootLayout({
   return (
     <>
       <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-gray-900 border-b text-sm py-2.5  dark:bg-neutral-950 dark:border-neutral-700">
-        <nav className=" mx-auto w-full flex md:grid md:grid-cols-3 md:gap-x-1 basis-full items-center w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className=" mx-auto w-full flex md:grid md:grid-cols-3 md:gap-x-1 basis-full items-center px-4 sm:px-6 lg:px-8">
 
-          {/* Logo */}
           <div
-            className="flex me-5 rounded-md text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
+            className="flex me-5 rounded-md text-xl font-semibold focus:outline-none focus:opacity-80"
             aria-label="Preline"
           >
             <Link href="/">
@@ -46,10 +61,9 @@ export default function RootLayout({
               mounted && <span className="text-white text-center flex justify-center items-center px-10">{user?.firstName}</span>
             }
 
-            {/* End Logo */}
           </div>
           <div className="hidden md:block">
-            {/* Search Input */}
+
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
                 <svg
@@ -203,257 +217,269 @@ export default function RootLayout({
               </svg>
               <span className="sr-only">Search</span>
             </button>
-            <button
-              type="button"
-              className="size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none"
-            >
-              <svg
-                className="shrink-0 size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-              </svg>
-              <span className="sr-only">Notifications</span>
-            </button>
-            <button
-              type="button"
-              className="size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none"
-            >
-              <svg
-                className="shrink-0 size-4"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-              </svg>
-              <span className="sr-only">Activity</span>
-            </button>
-            {/* Dropdown */}
-            <div className="hs-dropdown [--placement:bottom-right] relative inline-flex">
-              <button
-                id="hs-dropdown-account"
-                type="button"
-                className="size-[38px] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none dark:text-white"
-                aria-haspopup="menu"
-                aria-expanded="false"
-                aria-label="Dropdown"
-              >
-                {
-                  mounted && <Image
-                    className="shrink-0 size-[38px] rounded-full text-white"
-                    src={user?.profileImage ? user.profileImage : ''}
-                    width={120}
-                    height={120}
-                    alt="Avatar"
-                  />
-                }
 
-              </button>
-              <div
-                className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="hs-dropdown-account"
-              >
-                <div className="py-3 px-5 bg-gray-100 rounded-t-lg dark:bg-neutral-700">
-                  <p className="text-sm text-gray-500 dark:text-neutral-500">
-                    Signed in as
-                  </p>
-                  <p className="text-sm font-medium text-gray-800 dark:text-neutral-200">
-                    {mounted && user?.email}
-                  </p>
-                </div>
-                <div className="p-1.5 space-y-0.5">
-                  <a
-                    className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                    href="#"
+            {
+              (mounted && isLoggedIn) &&
+              <>
+                <button
+                  type="button"
+                  className="size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none"
+                >
+                  <svg
+                    className="shrink-0 size-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    <svg
-                      className="shrink-0 size-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                      <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                    </svg>
-                    Newsletter
-                  </a>
-                  <a
-                    className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                    href="#"
+                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                  </svg>
+                  <span className="sr-only">Notifications</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="size-[38px] relative inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 disabled:opacity-50 disabled:pointer-events-none"
+                >
+                  <svg
+                    className="shrink-0 size-4"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    <svg
-                      className="shrink-0 size-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                      <path d="M3 6h18" />
-                      <path d="M16 10a4 4 0 0 1-8 0" />
-                    </svg>
-                    Purchases
-                  </a>
-                  <a
-                    className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
-                    href="#"
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                  </svg>
+                  <span className="sr-only">Activity</span>
+                </button>
+
+                <div className="hs-dropdown [--placement:bottom-right] relative inline-flex">
+                  <button
+                    id="hs-dropdown-account"
+                    type="button"
+                    className="size-[38px] inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-800 focus:outline-none disabled:opacity-50 disabled:pointer-events-none dark:text-white"
+                    aria-haspopup="menu"
+                    aria-expanded="false"
+                    aria-label="Dropdown"
                   >
-                    <svg
-                      className="shrink-0 size-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
-                      <path d="M12 12v9" />
-                      <path d="m8 17 4 4 4-4" />
-                    </svg>
-                    Downloads
-                  </a>
+                    {
+                      mounted && <Image
+                        className="shrink-0 size-[38px] rounded-full text-white"
+                        src={user?.profileImage ? user.profileImage : ''}
+                        width={120}
+                        height={120}
+                        alt="Avatar"
+                      />
+                    }
+
+                  </button>
                   <div
-                    className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
+                    className="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full"
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="hs-dropdown-account"
                   >
-                    <svg
-                      className="shrink-0 size-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx={9} cy={7} r={4} />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  <Logouthandler/>
+                    <div className="py-3 px-5 bg-gray-100 rounded-t-lg dark:bg-neutral-700">
+                      <p className="text-sm text-gray-500 dark:text-neutral-500">
+                        Signed in as
+                      </p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-neutral-200">
+                        {mounted && user?.email}
+                      </p>
+                    </div>
+                    <div className="p-1.5 space-y-0.5">
+                      <a
+                        className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
+                        href="#"
+                      >
+                        <svg
+                          className="shrink-0 size-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                          <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                        </svg>
+                        Newsletter
+                      </a>
+                      <a
+                        className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
+                        href="#"
+                      >
+                        <svg
+                          className="shrink-0 size-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                          <path d="M3 6h18" />
+                          <path d="M16 10a4 4 0 0 1-8 0" />
+                        </svg>
+                        Purchases
+                      </a>
+                      <a
+                        className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
+                        href="#"
+                      >
+                        <svg
+                          className="shrink-0 size-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+                          <path d="M12 12v9" />
+                          <path d="m8 17 4 4 4-4" />
+                        </svg>
+                        Downloads
+                      </a>
+                      <div
+                        className="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700 dark:focus:text-neutral-300"
+                      >
+                        <svg
+                          className="shrink-0 size-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                          <circle cx={9} cy={7} r={4} />
+                          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        <Logouthandler />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            {/* End Dropdown */}
+              </>
+            }
+
           </div>
         </nav>
       </header>
 
+
+
       <main id="content">
         {/* Secondary Navbar */}
-        <div className="md:py-4 bg-white md:border-b border-gray-200 dark:bg-neutral-800 dark:border-neutral-700">
-          <nav className="relative max-w-[85rem] w-full mx-auto md:flex md:items-center md:gap-3 px-4 sm:px-6 lg:px-8">
-            {/* Collapse */}
-            <div
-              id="hs-secondaru-navbar"
-              className="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block"
-              aria-labelledby="hs-secondaru-navbar-collapse"
-            >
-              <div className="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
-                <div className="py-2 md:py-0 flex flex-col md:flex-row md:items-center gap-y-0.5 md:gap-y-0 md:gap-x-6">
-                  <Link
-                    className="py-2 md:py-0 flex items-center font-medium text-sm text-blue-600 focus:outline-none focus:text-blue-600 dark:text-blue-500 dark:focus:text-blue-500"
-                    href="/user/home"
-                    aria-current="page"
-                  >
-                    <svg
-                      className="shrink-0 size-4 me-3 md:me-2 block md:hidden"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+
+        {
+          isLoggedIn && !isLoading &&
+          <div className="md:py-4 bg-white md:border-b border-gray-200 dark:bg-neutral-800 dark:border-neutral-700">
+            <nav className="relative max-w-[85rem] w-full mx-auto md:flex md:items-center md:gap-3 px-4 sm:px-6 lg:px-8">
+              {/* Collapse */}
+              <div
+                id="hs-secondaru-navbar"
+                className="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block"
+                aria-labelledby="hs-secondaru-navbar-collapse"
+              >
+                <div className="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
+                  <div className="py-2 md:py-0 flex flex-col md:flex-row md:items-center gap-y-0.5 md:gap-y-0 md:gap-x-6">
+                    <Link
+                      className="py-2 md:py-0 flex items-center font-medium text-sm text-blue-600 focus:outline-none focus:text-blue-600 dark:text-blue-500 dark:focus:text-blue-500"
+                      href="/user/home"
+                      aria-current="page"
                     >
-                      <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
-                      <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                    </svg>
-                    Home
-                  </Link>
-                  <Link
-                    className="py-2 md:py-0 flex items-center font-medium text-sm text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-                    href="/user/my-orders"
-                  >
-                    <svg
-                      className="shrink-0 size-4 me-3 md:me-2 block md:hidden"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      <svg
+                        className="shrink-0 size-4 me-3 md:me-2 block md:hidden"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={24}
+                        height={24}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+                        <path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                      </svg>
+                      Home
+                    </Link>
+                    <Link
+                      className="py-2 md:py-0 flex items-center font-medium text-sm text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
+                      href="/user/my-orders"
                     >
-                      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                      <circle cx={12} cy={7} r={4} />
-                    </svg>
-                    My orders
-                  </Link>
-                  <Link
-                    className="py-2 md:py-0 flex items-center font-medium text-sm text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
-                    href="/user/cart"
-                  >
-                    <svg
-                      className="shrink-0 size-4 me-3 md:me-2 block md:hidden"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={24}
-                      height={24}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      <svg
+                        className="shrink-0 size-4 me-3 md:me-2 block md:hidden"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={24}
+                        height={24}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                        <circle cx={12} cy={7} r={4} />
+                      </svg>
+                      My orders
+                    </Link>
+                    <Link
+                      className="py-2 md:py-0 flex items-center font-medium text-sm text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
+                      href="/user/cart"
                     >
-                      <path d="M12 12h.01" />
-                      <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-                      <path d="M22 13a18.15 18.15 0 0 1-20 0" />
-                      <rect width={20} height={14} x={2} y={6} rx={2} />
-                    </svg>
-                    Cart
-                  </Link>
-                  {/* <a
+                      <svg
+                        className="shrink-0 size-4 me-3 md:me-2 block md:hidden"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={24}
+                        height={24}
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M12 12h.01" />
+                        <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                        <path d="M22 13a18.15 18.15 0 0 1-20 0" />
+                        <rect width={20} height={14} x={2} y={6} rx={2} />
+                      </svg>
+                      Cart
+                    </Link>
+                    {/* <a
                 className="py-2 md:py-0 flex items-center font-medium text-sm text-gray-800 hover:text-gray-500 focus:outline-none focus:text-gray-500 dark:text-neutral-200 dark:hover:text-neutral-500 dark:focus:text-neutral-500"
                 href="#"
               >
@@ -522,8 +548,8 @@ export default function RootLayout({
                 </svg>
                 Documentation
               </a> */}
-                  {/* Dropdown */}
-                  {/* <div className="hs-dropdown [--strategy:static] md:[--strategy:fixed] [--adaptive:none] [--is-collapse:true] md:[--is-collapse:false] ">
+                    {/* Dropdown */}
+                    {/* <div className="hs-dropdown [--strategy:static] md:[--strategy:fixed] [--adaptive:none] [--is-collapse:true] md:[--is-collapse:false] ">
                 <button
                   id="hs-secondaru-navbar-dropdown"
                   type="button"
@@ -644,13 +670,16 @@ export default function RootLayout({
                   </div>
                 </div>
               </div> */}
-                  {/* End Dropdown */}
+                    {/* End Dropdown */}
+                  </div>
                 </div>
               </div>
-            </div>
-            {/* End Collapse */}
-          </nav>
-        </div>
+              {/* End Collapse */}
+            </nav>
+          </div>
+        }
+
+
         {/* End Secondary Navbar */}
         {/* <div className=" relative">
                 <Process/>

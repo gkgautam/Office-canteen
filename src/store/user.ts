@@ -1,60 +1,18 @@
-// import { create } from "zustand";
-// import { persist } from "zustand/middleware";
-
-// interface userDataProps {
-//     profileImage: File | null;
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     password: string;
-//     phone:string // Changed type to File | null
-//     gender:string
-// }
-
-// interface UserProps {
-//   data: userDataProps;
-//   addUserData: (data: userDataProps) => void;
-// }
-
-// const MAX_QUANTITY = 10; // Define the maximum quantity value
-
-// const userStore = create<UserProps>()(
-//   persist(
-//     (set) => ({
-//       data: [],
-//       addUserData: (newItem) => set((state) => {
-
-// console.log('newItem',newItem);
-// console.log('state',state);
-// // return { data:data }
-
-//       })
-//     }),
-//     {
-//       name: "canteen-cart",
-//       getStorage: () => localStorage
-//     }
-//   )
-// );
-
-// export default userStore;
-
-
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { checkSession } from "@/actions/users/checkSession";
 
 interface UserDataProps {
-    profileImage: string | null | undefined;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone:string // Changed type to File | null
-    gender:string
-  }
+  profileImage: string | null | undefined;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string // Changed type to File | null
+  gender: string
+}
 
 interface UserStoreProps {
-  user: UserDataProps | null ;
+  user: UserDataProps | null;
   setUser: (userData: UserDataProps) => void;
   clearUser: () => void;
   updateUser: (updatedData: Partial<UserDataProps>) => void;
@@ -79,4 +37,31 @@ const useUserStore = create<UserStoreProps>()(
   )
 );
 
-export default useUserStore;
+interface UseSessionProps {
+  isLoggedIn: boolean;
+  isLoading: boolean;
+  session: { id: string; email: string } | null
+  checkUserSession: () => void;
+}
+
+const useSession = create<UseSessionProps>((state) => ({
+  isLoggedIn: false,
+  isLoading: true,
+  session: null,
+  checkUserSession: async () => {
+    try {
+      const getSession = await checkSession();
+
+      if (getSession.success) {
+        state({ isLoggedIn: true, isLoading: false, session: getSession.session })
+      }
+      else {
+        state({ isLoggedIn: false, isLoading: true })
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  }
+}));
+
+export { useUserStore, useSession };

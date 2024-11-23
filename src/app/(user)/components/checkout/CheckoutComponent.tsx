@@ -2,7 +2,7 @@
 
 import { addOrder } from '@/actions/orders/addOrder';
 import useCartStore from '@/store/cart';
-import useUserStore from '@/store/user';
+import { useUserStore } from '@/store/user';
 import { useRouter } from 'next/navigation';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
