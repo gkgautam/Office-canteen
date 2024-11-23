@@ -145,7 +145,7 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                 <td className="size-px whitespace-nowrap">
                                   <div className="px-6 py-3">
                                     <span className="text-sm text-gray-600 lowercase font-semibold dark:text-neutral-400">
-                                      user_name
+                                      {order.paymentDetails.order_by_email.split("@")[0]}
                                     </span>
                                   </div>
                                 </td>
@@ -224,7 +224,7 @@ function Orderlist({ data }: { data: DataProps[] }) {
 
                               <AnimatePresence>
                                 {
-                                   orders.map((order) => (
+                                  //  orders.map((order) => (
                                   expandedOrder === order._id && (
                                     <tr key={order._id}>
                                       <td colSpan={7}>
@@ -279,7 +279,7 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                       </td>
                                     </tr>
                                   )
-                                ))
+                                // ))
                                 }
                               </AnimatePresence>
                             </>
