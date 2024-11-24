@@ -84,7 +84,7 @@ const MyOrdersPage = () => {
                       <p className="float-right text-xs mt-2 text-gray-500">{order.orderDetails[0].menuItemDescription}</p>
                       <p className="text-lg font-bold">Total: Rs. {order.paymentDetails && order.paymentDetails.grandTotal}</p>
                       <p>
-                      Status: <span className='py-1 px-1.5 inline-flex items-center gap-x-1 text-xs bg-teal-100 text-teal-800 rounded-full w-fit font-semibold dark:bg-teal-500/10 dark:text-teal-500 capitalize'>{order.orderStatus}</span>
+                      Status: <span className='py-1 px-2.5 inline-flex items-center gap-x-1 text-xs bg-teal-100 text-teal-800 rounded-lg w-fit font-semibold dark:bg-teal-500/10 dark:text-teal-500 capitalize'>{order.orderStatus}</span>
                       </p>
                     </div>
                   </div>

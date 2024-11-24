@@ -174,7 +174,7 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                 </td>
                                 <td className="size-px whitespace-nowrap">
                                   <div className="px-6 py-3">
-                                    <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500 capitalize">
+                                    <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-lg dark:bg-teal-500/10 dark:text-teal-500 capitalize">
                                       <select
                                         value={order.orderStatus}
                                         onChange={(e) => handleStatusChange(order._id, e.target.value)}
