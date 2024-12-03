@@ -63,6 +63,15 @@ function Orderlist({ data }: { data: DataProps[] }) {
     }
   };
 
+  // Mapping of order status to Tailwind CSS classes for background color
+  const statusColors = {
+    confirmed: "bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500",
+    cancelled: "bg-red-100 text-red-800 dark:bg-red-500/10 dark:text-red-500",
+    preparing: "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-500",
+    pending: "bg-gray-100 text-gray-800 dark:bg-gray-500/10 dark:text-gray-500",
+    ready: "bg-blue-100 text-blue-800 dark:bg-blue-500/10 dark:text-blue-500",
+    completed: "bg-green-100 text-green-800 dark:bg-green-500/10 dark:text-green-500",
+  };
 
   return (
     <>
@@ -174,7 +183,7 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                 </td>
                                 <td className="size-px whitespace-nowrap">
                                   <div className="px-6 py-3">
-                                    <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-lg dark:bg-teal-500/10 dark:text-teal-500 capitalize">
+                                    <span className={`py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium rounded-lg capitalize ${statusColors[order.orderStatus]}`}>
                                       <select
                                         value={order.orderStatus}
                                         onChange={(e) => handleStatusChange(order._id, e.target.value)}
@@ -295,4 +304,4 @@ function Orderlist({ data }: { data: DataProps[] }) {
   )
 }
 
-export default Orderlist
+export default Orderlist;
