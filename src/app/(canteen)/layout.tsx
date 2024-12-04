@@ -429,6 +429,7 @@ export default function RootLayout({
           width={116}
           height={32}
           alt="company-logo"
+          className="rounded-md"
           />
         </a>
         {/* End Logo */}
