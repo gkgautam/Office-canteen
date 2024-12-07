@@ -772,12 +772,11 @@ export default function RootLayout({
                   </span>
                 </p>
                 <p>
-                  <a
+                <Link href="/contact"
                     className="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 focus:outline-none focus:text-gray-200 dark:text-neutral-400 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
-                    href="#"
                   >
-                    Customers
-                  </a>
+                    Contact us
+                  </Link>
                 </p>
               </div>
             </div>
