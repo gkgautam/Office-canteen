@@ -65,7 +65,7 @@ function About() {
               />
         <h3 className="text-xl font-semibold mb-2">About The Developer</h3>
         <p className="text-lg text-gray-700 text-center">
-          Hello, I am a passionate developer with a strong background in MERN stack and web technologies. I strive to create intuitive, user-friendly applications that improve people's everyday lives. With a focus on solving real-world problems and continuously learning new skills, I'm excited about contributing to meaningful projects and enhancing user experiences.
+          Hello, I am a passionate developer with a strong background in MERN stack and web technologies. I strive to create intuitive, user-friendly applications that improve peoples everyday lives. With a focus on solving real-world problems and continuously learning new skills, I am excited about contributing to meaningful projects and enhancing user experiences.
         </p>
       </div>
       </div>
