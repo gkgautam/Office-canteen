@@ -55,6 +55,7 @@ export default function RootLayout({
                 width={60}
                 height={20}
                 alt="company-logo"
+                className="rounded-md"
               />
             </Link>
             {
@@ -693,15 +694,23 @@ export default function RootLayout({
         <div className="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 lg:pt-20 mx-auto">
           {/* Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            <div className="col-span-full lg:col-span-1">
-              <a
-                className="flex-none text-xl font-semibold text-white focus:outline-none focus:opacity-80"
-                href="#"
-                aria-label="Brand"
-              >
-                Brand
-              </a>
-            </div>
+          <div className="">
+        {/* Logo */}
+        <a
+          className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
+          href="#"
+          aria-label="Preline"
+        >
+          <Image
+          src={CompanyLogo}
+          width={116}
+          height={32}
+          alt="company-logo"
+          className="rounded-md"
+          />
+        </a>
+        {/* End Logo */}
+      </div>
             {/* End Col */}
             <div className="col-span-1">
               <h4 className="font-semibold text-gray-100">Product</h4>
@@ -737,12 +746,11 @@ export default function RootLayout({
               <h4 className="font-semibold text-gray-100">Company</h4>
               <div className="mt-3 grid space-y-3">
                 <p>
-                  <a
+                <Link href="/about"
                     className="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 focus:outline-none focus:text-gray-200 dark:text-neutral-400 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
-                    href="#"
                   >
                     About us
-                  </a>
+                  </Link>
                 </p>
                 <p>
                   <a
@@ -764,12 +772,11 @@ export default function RootLayout({
                   </span>
                 </p>
                 <p>
-                  <a
+                <Link href="/contact"
                     className="inline-flex gap-x-2 text-gray-400 hover:text-gray-200 focus:outline-none focus:text-gray-200 dark:text-neutral-400 dark:hover:text-neutral-200 dark:focus:text-neutral-200"
-                    href="#"
                   >
-                    Customers
-                  </a>
+                    Contact us
+                  </Link>
                 </p>
               </div>
             </div>

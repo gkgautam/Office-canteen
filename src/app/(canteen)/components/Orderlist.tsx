@@ -291,10 +291,16 @@ function Orderlist({ data }: { data: DataProps[] }) {
                 </div>
               </div>
             </div>
+            {/* End Footer */}
           </div>
         </div>
-      }
-    </>
+      </div>
+    </div>
+    {/* End Card */}
+  </div>
+  {/* End Table Section */}
+</>
+
   )
 }
 
