@@ -32,19 +32,7 @@ interface DataProps {
   updatedAt: Date;
 }
 
-interface StatusColorsProps {
-  confirmed: string;
-  cancelled: string;
-  preparing: string;
-  pending: string;
-  ready: string;
-  completed: string;
-}
-
-const orderStatusOptions = ['confirmed', 'cancelled', 'preparing', 'pending', 'ready', 'completed'] as const;
-
-// Define the type of 'orderStatus' more strictly
-type OrderStatus = typeof orderStatusOptions[number];
+const orderStatusOptions = ['confirmed', 'cancelled', 'preparing', 'pending', 'ready', 'completed'];
 
 function Orderlist({ data }: { data: DataProps[] }) {
 
@@ -60,23 +48,23 @@ function Orderlist({ data }: { data: DataProps[] }) {
     setExpandedOrder(prev => (prev === orderId ? null : orderId));
   };
 
-  const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
+  const handleStatusChange = async (orderId: string, newStatus: string) => {
+
     // Update local state
     setOrders(prevOrders =>
       prevOrders.map(order =>
         order._id === orderId ? { ...order, orderStatus: newStatus } : order
       )
     );
-  
+
     const res = await updateOrderStatus(orderId, newStatus);
     if (res.success) {
       alert(`Status Updated ${newStatus}`);
     }
   };
-  
 
   // Mapping of order status to Tailwind CSS classes for background color
-  const statusColors: StatusColorsProps = {
+  const statusColors: Record<string, string> = {
     confirmed: "bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500",
     cancelled: "bg-red-100 text-red-800 dark:bg-red-500/10 dark:text-red-500",
     preparing: "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-500",
@@ -195,10 +183,10 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                 </td>
                                 <td className="size-px whitespace-nowrap">
                                   <div className="px-6 py-3">
-                                    <span className={`py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium rounded-lg capitalize ${statusColors[order.orderStatus as OrderStatus]}`}>
+                                    <span className={`py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium rounded-lg capitalize ${statusColors[order.orderStatus as keyof typeof statusColors]}`}>
                                       <select
                                         value={order.orderStatus}
-                                        onChange={(e) => handleStatusChange(order._id, e.target.value as OrderStatus)}
+                                        onChange={(e) => handleStatusChange(order._id, e.target.value)}
                                         className="bg-transparent rounded-md p-1 text-xs"
                                       >
                                         {orderStatusOptions.map(status => (
@@ -279,9 +267,9 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                                             }
                                                           </div>
                                                           <div className="flex w-full flex-col px-4">
-                                                            <p className="text-lg capitalize font-bold">{item.menuItemName}</p>
+                                                           <p className="text-lg capitalize font-bold">{item.menuItemName}</p>
                                                             <span className="float-right text-sm text-gray-600 capitalize">{item.menuItemCategory}</span>
-
+                                              
                                                             <p className="float-right text-xs mt-2 text-gray-500">Quantity: {item.quantity}</p>
                                                             <p className="text-sm font-medium">Price: Rs. {item.menuItemPrice}</p>
                                                           </div>
