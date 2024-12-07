@@ -52,7 +52,17 @@ const MyOrdersPage = () => {
     if (user?.email) {
       getMyorders(user.email);
     }
-  }, []);
+  }, [user]);
+
+  // Mapping of order status to Tailwind CSS classes for background color
+  const statusColors: Record<string, string> = {
+    confirmed: "bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500",
+    cancelled: "bg-red-100 text-red-800 dark:bg-red-500/10 dark:text-red-500",
+    preparing: "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-500",
+    pending: "bg-gray-100 text-gray-800 dark:bg-gray-500/10 dark:text-gray-500",
+    ready: "bg-blue-100 text-blue-800 dark:bg-blue-500/10 dark:text-blue-500",
+    completed: "bg-green-100 text-green-800 dark:bg-green-500/10 dark:text-green-500",
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -83,6 +93,12 @@ const MyOrdersPage = () => {
                       <span className="float-right text-sm text-gray-600 capitalize">{order.orderDetails[0].menuItemCategory}</span>
                       <p className="float-right text-xs mt-2 text-gray-500">{order.orderDetails[0].menuItemDescription}</p>
                       <p className="text-lg font-bold">Total: Rs. {order.paymentDetails && order.paymentDetails.grandTotal}</p>
+                      <p>
+                        Status:
+                        <span className={`py-1 px-2.5 inline-flex items-center gap-x-1 text-xs font-semibold rounded-lg w-fit capitalize ${statusColors[order.orderStatus as keyof typeof statusColors]}`}>
+                          {order.orderStatus}
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </div>

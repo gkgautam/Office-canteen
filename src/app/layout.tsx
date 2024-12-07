@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 // import Navbar from "./components/ui/Navbar";
 import PrelineScript from "./components/PrelineScript";
+// import Navbar from "./components/ui/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* <Navbar/> */}
+        {/* <Navbar /> */}
         {/* <div className="w-11/12 mx-auto"> */}
         {children}
         {/* </div> */}

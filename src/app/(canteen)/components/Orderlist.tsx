@@ -3,6 +3,7 @@
 import { parseISO, format } from 'date-fns';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { updateOrderStatus } from '@/actions/orders/updateOrderStatus';
 
 interface MenuItem {
   _id: string;
@@ -31,7 +32,19 @@ interface DataProps {
   updatedAt: Date;
 }
 
-const orderStatusOptions = ['confirmed', 'cancelled', 'preparing', 'pending', 'ready', 'completed'];
+interface StatusColorsProps {
+  confirmed: string;
+  cancelled: string;
+  preparing: string;
+  pending: string;
+  ready: string;
+  completed: string;
+}
+
+const orderStatusOptions = ['confirmed', 'cancelled', 'preparing', 'pending', 'ready', 'completed'] as const;
+
+// Define the type of 'orderStatus' more strictly
+type OrderStatus = typeof orderStatusOptions[number];
 
 function Orderlist({ data }: { data: DataProps[] }) {
 
@@ -47,23 +60,29 @@ function Orderlist({ data }: { data: DataProps[] }) {
     setExpandedOrder(prev => (prev === orderId ? null : orderId));
   };
 
-  const handleStatusChange = async (orderId: string, newStatus: string) => {
+  const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
     // Update local state
     setOrders(prevOrders =>
-      prevOrders.map(order => 
+      prevOrders.map(order =>
         order._id === orderId ? { ...order, orderStatus: newStatus } : order
       )
     );
+  
+    const res = await updateOrderStatus(orderId, newStatus);
+    if (res.success) {
+      alert(`Status Updated ${newStatus}`);
+    }
+  };
+  
 
-    // Here you would make an API call to update the order status in your database
-    console.log(`Updating order ${orderId} to status: ${newStatus}`);
-    
-    // Example API call (uncomment and implement):
-    // await fetch(`/api/orders/${orderId}`, {
-    //   method: 'PATCH',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ orderStatus: newStatus }),
-    // });
+  // Mapping of order status to Tailwind CSS classes for background color
+  const statusColors: StatusColorsProps = {
+    confirmed: "bg-teal-100 text-teal-800 dark:bg-teal-500/10 dark:text-teal-500",
+    cancelled: "bg-red-100 text-red-800 dark:bg-red-500/10 dark:text-red-500",
+    preparing: "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-500",
+    pending: "bg-gray-100 text-gray-800 dark:bg-gray-500/10 dark:text-gray-500",
+    ready: "bg-blue-100 text-blue-800 dark:bg-blue-500/10 dark:text-blue-500",
+    completed: "bg-green-100 text-green-800 dark:bg-green-500/10 dark:text-green-500",
   };
 
   return (
@@ -176,18 +195,18 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                 </td>
                                 <td className="size-px whitespace-nowrap">
                                   <div className="px-6 py-3">
-                                    <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium bg-teal-100 text-teal-800 rounded-full dark:bg-teal-500/10 dark:text-teal-500 capitalize">
-                                    <select
-                                value={order.orderStatus}
-                                onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                                className="bg-transparent rounded-md p-1 text-xs"
-                              >
-                                {orderStatusOptions.map(status => (
-                                  <option key={status} value={status}>
-                                    {status}
-                                  </option>
-                                ))}
-                              </select>
+                                    <span className={`py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium rounded-lg capitalize ${statusColors[order.orderStatus as OrderStatus]}`}>
+                                      <select
+                                        value={order.orderStatus}
+                                        onChange={(e) => handleStatusChange(order._id, e.target.value as OrderStatus)}
+                                        className="bg-transparent rounded-md p-1 text-xs"
+                                      >
+                                        {orderStatusOptions.map(status => (
+                                          <option key={status} value={status}>
+                                            {status}
+                                          </option>
+                                        ))}
+                                      </select>
                                     </span>
                                   </div>
                                 </td>
@@ -221,10 +240,8 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                 </td>
                               </tr>
 
-
                               <AnimatePresence>
                                 {
-                                  //  orders.map((order) => (
                                   expandedOrder === order._id && (
                                     <tr key={order._id}>
                                       <td colSpan={7}>
@@ -262,10 +279,11 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                                             }
                                                           </div>
                                                           <div className="flex w-full flex-col px-4">
+                                                            <p className="text-lg capitalize font-bold">{item.menuItemName}</p>
                                                             <span className="float-right text-sm text-gray-600 capitalize">{item.menuItemCategory}</span>
-                                                            <p className="float-right text-xs mt-2 text-gray-500">{item.menuItemDescription}</p>
+
                                                             <p className="float-right text-xs mt-2 text-gray-500">Quantity: {item.quantity}</p>
-                                                            <p className="text-lg font-bold">Price: Rs. {item.menuItemPrice}</p>
+                                                            <p className="text-sm font-medium">Price: Rs. {item.menuItemPrice}</p>
                                                           </div>
                                                         </div>
                                                       </div>
@@ -279,7 +297,7 @@ function Orderlist({ data }: { data: DataProps[] }) {
                                       </td>
                                     </tr>
                                   )
-                                // ))
+                                  // ))
                                 }
                               </AnimatePresence>
                             </>
@@ -291,17 +309,11 @@ function Orderlist({ data }: { data: DataProps[] }) {
                 </div>
               </div>
             </div>
-            {/* End Footer */}
           </div>
         </div>
-      </div>
-    </div>
-    {/* End Card */}
-  </div>
-  {/* End Table Section */}
-</>
-
+      }
+    </>
   )
 }
 
-export default Orderlist  
+export default Orderlist;
