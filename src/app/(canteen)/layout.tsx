@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import CompanyLogo from "/public/company-logo-3.png"
+import CompanyLogo from "/public/logof.svg"
 
 export default function RootLayout({
   children,

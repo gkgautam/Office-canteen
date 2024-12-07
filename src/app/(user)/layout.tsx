@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import CompanyLogo from "/public/company-logo-3.png"
+import CompanyLogo from "/public/logof.svg"
 import { useSession, useUserStore } from "@/store/user";
 import { useEffect, useState } from "react";
 import Logouthandler from "./components/Logouthandler/Logouthandler";
@@ -42,7 +42,7 @@ export default function RootLayout({
 
   return (
     <>
-      <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-gray-900 border-b text-sm py-2.5  dark:bg-neutral-950 dark:border-neutral-700">
+      <header className="sticky top-0 inset-x-0 flex flex-wrap md:justify-start md:flex-nowrap z-[48] w-full bg-[#161851] border-b text-sm py-2.5  dark:bg-neutral-950 dark:border-neutral-700">
         <nav className=" mx-auto w-full flex md:grid md:grid-cols-3 md:gap-x-1 basis-full items-center px-4 sm:px-6 lg:px-8">
 
           <div
@@ -690,16 +690,16 @@ export default function RootLayout({
         </div>
       </main>
 
-      <footer className="mt-auto bg-gray-900 w-full dark:bg-neutral-950">
+      <footer className="mt-auto bg-[#161851] w-full dark:bg-neutral-950">
         <div className="mt-auto w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 lg:pt-20 mx-auto">
           {/* Grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
           <div className="">
         {/* Logo */}
-        <a
-          className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
-          href="#"
-          aria-label="Preline"
+        <Link
+          // className="flex-none rounded-xl text-xl inline-block font-semibold focus:outline-none focus:opacity-80"
+          href="/"
+          // aria-label="Preline"
         >
           <Image
           src={CompanyLogo}
@@ -708,7 +708,7 @@ export default function RootLayout({
           alt="company-logo"
           className="rounded-md"
           />
-        </a>
+        </Link>
         {/* End Logo */}
       </div>
             {/* End Col */}

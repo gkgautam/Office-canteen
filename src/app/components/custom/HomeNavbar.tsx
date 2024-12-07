@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import applogo from '/public/logof.svg';
+import Image from 'next/image';
 
 const HomeNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,7 +52,7 @@ const HomeNavbar = () => {
   };
 
   return (
-    <nav className="bg-gray-800 text-white p-4 shadow-md">
+    <nav className="bg-[#161851] text-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <motion.div
@@ -59,7 +61,16 @@ const HomeNavbar = () => {
           transition={{ type: 'spring', stiffness: 300 }}
           className="text-2xl font-bold"
         >
-          MyLogo
+          <Link href={"/"}>
+          <Image
+            src={applogo as string}
+            className="w-28 rounded"
+            width={200}
+            height={200}
+            alt="menu-image"
+          /></Link>
+                        
+
         </motion.div>
 
         {/* Desktop Navigation */}
