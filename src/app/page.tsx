@@ -76,7 +76,7 @@ export default function Home() {
           {/* Title */}
           <div className="mt-5 max-w-3xl">
             <h1 className="block font-semibold text-gray-800 text-4xl md:text-5xl lg:text-6xl dark:text-neutral-200">
-                What Canteensync Offers  <p className="inline-block bg-clip-text bg-gradient-to-l from-blue-600 to-violet-500 text-transparent dark:from-blue-400 dark:to-violet-400"><FlipWords words={features}/></p>
+                What Canteensync Offers  <FlipWords words={features}/>
             </h1>
           </div>
           {/* End Title */}
