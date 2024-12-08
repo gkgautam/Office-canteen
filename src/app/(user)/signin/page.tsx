@@ -8,6 +8,7 @@ import { setCookie, parseCookies } from 'nookies';
 import { useRouter } from 'next/navigation'; // Ensure the correct import
 import {useUserStore} from '@/store/user';
 import { truncate } from 'fs';
+import { toast } from 'react-hot-toast';
 // import userStore from '@/store/user';
 
 
@@ -52,14 +53,25 @@ function SignIn() {
 
       const res = await signInUser(formData);
 
-      // console.log(res);
-      alert(res.message);
+      console.log(res);
+      // alert(res.message);
+      if(res.statusCode===200){
+        toast.success(res.message);
+      }
+      else{
+        toast.error(res.message);
+      }
+
 
       if (res.success && res.token) {
         // addUserData(res.user)
         setCookie(null, 'token', res.token, { secure: true, path: "/" });
         res.user?user?handleUpdateUser(res.user):handleLoginSuccess(res.user):'';
         router.push("/user/home");
+        router.refresh()
+        setTimeout(() => {
+          window.location.reload();  // Force a hard reload
+        }, 500);
       }
     },
   });

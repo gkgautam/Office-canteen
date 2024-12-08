@@ -2,6 +2,7 @@ import React from 'react'
 import { useRouter } from 'next/navigation';
 import {useUserStore} from '@/store/user';
 import { destroyCookie } from 'nookies';
+import { toast } from 'react-hot-toast';
 
 function Logouthandler() {
     const { clearUser } = useUserStore();
@@ -13,9 +14,12 @@ function Logouthandler() {
   
       // Remove cookie
       destroyCookie(null, 'token', { path: '/' });
-  
+      toast.success('User logged Out!')
       // Redirect to login page
       router.push('/signin');
+      setTimeout(() => {
+        window.location.reload();  // Force a hard reload
+      }, 500);
     };
   
     return (
