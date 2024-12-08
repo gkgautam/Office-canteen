@@ -50,7 +50,7 @@ export default function RootLayout({
           >
             <Link href="/">
               <Image
-                src={`/logof.svg`}
+                src={`/logof.png`}
                 width={60}
                 height={20}
                 alt="company-logo"
@@ -701,7 +701,7 @@ export default function RootLayout({
           // aria-label="Preline"
         >
           <Image
-          src={`/logof.svg`}
+          src={`/logof.png`}
           width={116}
           height={32}
           alt="company-logo"

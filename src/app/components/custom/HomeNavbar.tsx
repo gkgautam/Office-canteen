@@ -12,9 +12,9 @@ const HomeNavbar = () => {
 
   const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'About', href: '#about' },
+    { name: 'About', href: 'about' },
     { name: 'Services', href: '#services' },
-    { name: 'Contact', href: '#contact' }
+    { name: 'Contact', href: 'contact' }
   ];
 
   const linkVariants = {
@@ -61,7 +61,7 @@ const HomeNavbar = () => {
         >
           <Link href={"/"}>
             <Image
-              src={`/logof.svg`}
+              src={`/logof.png`}
               className="w-28 rounded"
               width={200}
               height={200}

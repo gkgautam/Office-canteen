@@ -424,7 +424,7 @@ export default function RootLayout({
           aria-label="Preline"
         >
           <Image
-          src={`/logof.svg`}
+          src={`/logof.png`}
           width={116}
           height={32}
           alt="company-logo"
