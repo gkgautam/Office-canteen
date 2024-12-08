@@ -86,8 +86,11 @@ export default function Home() {
           </div>
         </div>
         <Image
-          src={`/app-work.png`}
-          alt="app working"
+        src={`/app-work.png`}
+        alt="app working"
+        layout="responsive"
+        width={100}  
+        height={100}
         />
       </div>
       {/* End Hero */}

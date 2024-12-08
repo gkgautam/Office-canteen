@@ -65,7 +65,7 @@ const HomeNavbar = () => {
               className="w-28 rounded"
               width={200}
               height={200}
-              alt="menu-image"
+              alt="app-logo"
             /></Link>
 
 
