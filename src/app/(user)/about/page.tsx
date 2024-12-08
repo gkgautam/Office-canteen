@@ -1,5 +1,4 @@
 import React from 'react'
-import devDp from '/public/dev.jpeg';
 import Image from 'next/image';
 
 function About() {
@@ -57,7 +56,7 @@ function About() {
           className="rounded-full w-24 h-24 mb-4"
         /> */}
                 <Image
-                src={devDp}
+                src={`/dev.jpeg`}
                 width={100}
                 height={100}
                 alt="Developer"

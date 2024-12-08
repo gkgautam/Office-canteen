@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import CompanyLogo from "/public/logof.svg"
 import { useSession, useUserStore } from "@/store/user";
 import { useEffect, useState } from "react";
 import Logouthandler from "./components/Logouthandler/Logouthandler";
@@ -51,7 +50,7 @@ export default function RootLayout({
           >
             <Link href="/">
               <Image
-                src={CompanyLogo}
+                src={`/logof.svg`}
                 width={60}
                 height={20}
                 alt="company-logo"
@@ -702,7 +701,7 @@ export default function RootLayout({
           // aria-label="Preline"
         >
           <Image
-          src={CompanyLogo}
+          src={`/logof.svg`}
           width={116}
           height={32}
           alt="company-logo"

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import CompanyLogo from "/public/logof.svg"
 
 export default function RootLayout({
   children,
@@ -425,7 +424,7 @@ export default function RootLayout({
           aria-label="Preline"
         >
           <Image
-          src={CompanyLogo}
+          src={`/logof.svg`}
           width={116}
           height={32}
           alt="company-logo"
