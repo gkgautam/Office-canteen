@@ -156,7 +156,7 @@ function SignUp() {
                 className="hs-tooltip-content hs-tooltip-shown:opacity-100 hs-tooltip-shown:visible opacity-0 transition-opacity inline-block absolute invisible w-40 text-center z-10 py-1 px-2 bg-gray-900 text-xs font-medium text-white rounded shadow-sm dark:bg-neutral-700"
                 role="tooltip"
               >
-                Displayed on public forums, such as office-canteen
+                Displayed on public forums, such as canteensync
               </span>
             </div>
           </div>
