@@ -61,7 +61,7 @@ const HomeNavbar = () => {
         >
           <Link href={"/"}>
             <Image
-              src={`/logof.png`}
+              src="/compnay-logo.png"
               className="w-28 rounded"
               width={200}
               height={200}
@@ -128,7 +128,7 @@ const HomeNavbar = () => {
             animate="visible"
             exit="hidden"
             variants={mobileMenuVariants}
-            className="md:hidden absolute left-0 right-0 bg-gray-800"
+            className="md:hidden absolute left-0 right-0 bg-gray-800 z-40"
           >
             <div className="flex flex-col items-center space-y-4 py-6">
               {navLinks.map((link, index) => (
@@ -155,11 +155,11 @@ const HomeNavbar = () => {
               </div>
               <div className="flex flex-col justify-center items-center gap-3">
                 <Button asChild>
-                  <Link href={"/login"}>Login</Link>
+                  <Link href={"/signin"}>Login</Link>
                 </Button>
 
                 <Button asChild variant="outline" className='bg-inherit'>
-                  <Link href={"/user/signup"}>Register</Link>
+                  <Link href={"/signup"}>Register</Link>
                 </Button>
               </div>
             </div>

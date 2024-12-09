@@ -86,11 +86,11 @@ export default function Home() {
           </div>
         </div>
         <Image
-        src={`/app-work.png`}
-        alt="app working"
-        layout="responsive"
-        width={100}  
-        height={100}
+          src="/app-work.png"
+          alt="app working"
+          width={1000}
+          height={1000}
+          className="w-full"
         />
       </div>
       {/* End Hero */}
@@ -1189,7 +1189,7 @@ export default function Home() {
                   // aria-label="Preline"
                   >
                     <Image
-                      src={`/logof.png`}
+                      src="/compnay-logo.png"
                       width={116}
                       height={32}
                       alt="company-logo"
