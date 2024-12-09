@@ -71,7 +71,7 @@ function SignIn() {
         router.refresh()
         setTimeout(() => {
           window.location.reload();  // Force a hard reload
-        }, 500);
+        }, 1000);
       }
     },
   });
